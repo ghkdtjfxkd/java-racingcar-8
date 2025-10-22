@@ -12,7 +12,6 @@ import racingcar.TestDataProvider;
 
 class CarNameTest {
 
-    private static final short MIN_NAME_LENGTH = 1;
     private static final short MAX_NAME_LENGTH = 5;
 
     /**
@@ -52,31 +51,6 @@ class CarNameTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format("[ERROR]: 자동차 이름은 %d글자 이하여야 합니다.", MAX_NAME_LENGTH));
     }
-
-//    @ParameterizedTest(name = "[{index}] 자동차 이름 글자수 최소 값 미만 시 예외 발생 테스트: {1}")
-//    @MethodSource("provideUnderSizedCarNameTokens")
-//    @DisplayName("자동차 이름 글자 수가 최소 값을 미만인 경우 예외 발생 테스트")
-//    void undersized_name_exception_test(String carNameToken, String description) {
-//        assertThrows(IllegalArgumentException.class, () -> CarName.of(carNameToken));
-//    }
-//
-//    @ParameterizedTest(name = "[{index}] 자동차 이름 글자수 최소 값 미만 시 예외 메시지 테스트: {1}")
-//    @MethodSource("provideUnderSizedCarNameTokens")
-//    @DisplayName("자동차 이름 글자 수가 최소 값을 미만인 경우 예외 발생 테스트")
-//    void undersized_name_exception_message_test(String carNameToken, String description) {
-//        /**
-//         *  빈 입력(empty) 검증 ->  공백 문자 포함 검증 -> 이름 길이 검증 순서로 진행되기에
-//         *  MIN_NAME_LENGTH 가 1인 경우, 최소 값 미만의 길이(0)의 문자열인 빈 값(empty)이
-//         */
-//
-//        if(!carNameToken.isEmpty()){
-//            assertThatThrownBy(() -> CarName.of(carNameToken))
-//                    .isInstanceOf(IllegalArgumentException.class)
-//                    .hasMessage(String.format("[ERROR]: 자동차 이름은 %d글자 이상이어야 합니다.", MIN_NAME_LENGTH));
-//        }
-//    }
-
-
 
     private static Stream<Arguments> provideWrongCarNameTokens() {
         return Stream.of(
