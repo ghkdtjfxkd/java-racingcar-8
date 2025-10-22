@@ -3,7 +3,7 @@ package racingcar;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
-public final class TestDataProvider {
+public final class GlobalTestDataProvider {
 
     public static final String DELIMITER = ",";
     public static final short MAX_NAME_LENGTH = 5;
@@ -44,7 +44,6 @@ public final class TestDataProvider {
                 Arguments.of("a b", "(a\" \"b)문자열 가운데 공백-[길이: 3]"),
                 Arguments.of(" ab", "(\" \"ab)문자열 앞에 공백-[길이: 3]"),
                 Arguments.of("ab ", "(ab\" \")문자열 뒤에 공백-[길이: 3]")
-
         );
     }
 
