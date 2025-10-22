@@ -3,7 +3,7 @@
 > Event-Driven-Architecture로 구현하는 자동차 경주
 
 ### 🧩EventBus
-- [ ] Event Bus
+- [x] Event Bus
 - [ ] Event Bus 에서 사용될 이벤트 스키마 정의
 
 ### 🏎️ Entry
