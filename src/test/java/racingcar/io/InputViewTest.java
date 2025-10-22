@@ -44,9 +44,9 @@ class InputViewTest {
     void correctInputTest(String input, String description) {
         //given
         String simulatedInput = input + System.lineSeparator();
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         //when
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
         RacingCarNamesRequest request = InputView.requestRacingCarNames();
 
         //then
@@ -60,9 +60,10 @@ class InputViewTest {
         String simulatedInput = "test" + System.lineSeparator();
         InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
 
-        //when
         System.setIn(inputStream);
-        RacingCarNamesRequest previous = InputView.requestRacingCarNames();
+        InputView.requestRacingCarNames();
+
+        //when
         InputView.close();
 
         //then
@@ -71,19 +72,41 @@ class InputViewTest {
 
     @Test
     @DisplayName("차량 이름 입력 안내 메시지 출력 테스트")
-    void guideMessageTest() {
+    void guideCarNamesMessageTest() {
         //given
         String simulatedInput = "test" + System.lineSeparator();
         InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         OutputStream outputStream = new ByteArrayOutputStream();
+
         System.setIn(inputStream);
         System.setOut(new PrintStream(outputStream));
 
         //when
-        RacingCarNamesRequest userInput = InputView.requestRacingCarNames();
+        InputView.requestRacingCarNames();
 
         //then
         String expected = "경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)" + System.lineSeparator();
+        String actualAnnouncement = outputStream.toString();
+
+        assertEquals(expected, actualAnnouncement);
+    }
+
+    @Test
+    @DisplayName("시도할 횟수 입력 안내 메시지 출력 테스트")
+    void guideLapCountMessageTest() {
+        //given
+        String simulatedInput = "test" + System.lineSeparator();
+        InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+        OutputStream outputStream = new ByteArrayOutputStream();
+
+        System.setIn(inputStream);
+        System.setOut(new PrintStream(outputStream));
+
+        //when
+        InputView.requestLapCount();
+
+        //then
+        String expected = "시도할 횟수는 몇 회인가요?" + System.lineSeparator();
         String actualAnnouncement = outputStream.toString();
 
         assertEquals(expected, actualAnnouncement);

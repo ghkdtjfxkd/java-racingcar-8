@@ -1,24 +1,23 @@
 package racingcar.io;
 
 import camp.nextstep.edu.missionutils.Console;
+import racingcar.dto.LapCountRequest;
 import racingcar.dto.RacingCarNamesRequest;
 
 public class InputView {
-
-    private static final String GUIDE_CAR_NAMES = "경주할 자동차 이름(이름은 쉼표(,) 기준으로 구분)";
-
-    private InputView() {}
-
-    public static RacingCarNamesRequest requestRacingCarNames () {
-        return RacingCarNamesRequest.from(announce(GUIDE.CAR_NAMES));
+    private InputView() {
     }
 
-    private static String announce(GUIDE guide) {
+    public static RacingCarNamesRequest requestRacingCarNames() {
+        return RacingCarNamesRequest.from(prompt(GUIDE.CAR_NAMES));
+    }
+
+    public static LapCountRequest requestLapCount() {
+        return LapCountRequest.from(prompt(GUIDE.LAP_COUNT));
+    }
+
+    private static String prompt(GUIDE guide) {
         System.out.println(guide.message());
-        return readInput();
-    }
-
-    private static String readInput() {
         return Console.readLine();
     }
 
@@ -27,7 +26,8 @@ public class InputView {
     }
 
     private enum GUIDE {
-        CAR_NAMES("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)");
+        CAR_NAMES("경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)"),
+        LAP_COUNT("시도할 횟수는 몇 회인가요?");
 
         private final String message;
 
