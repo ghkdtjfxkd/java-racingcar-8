@@ -34,4 +34,8 @@ public class CarName {
             throw new IllegalArgumentException(ErrorMessage.EXCEEDS_MAX_LENGTH.getMessageWith(MAX_LENGTH));
         }
     }
+
+    String get(){
+        return name;
+    }
 }
