@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import racingcar.TestDataProvider;
+import racingcar.GlobalTestDataProvider;
 
 class CarNameTest {
 
@@ -27,7 +27,7 @@ class CarNameTest {
 
     @ParameterizedTest(name = "[{index}] 자동차 이름이 비어있을 때 예외 메지시 정상 출력 테스트: {1}")
     @MethodSource("provideEmptyCarNameTokens")
-    @DisplayName("자동차 이름이 비어있을 때(BLNAKf) 예외 메지시 정상 출력 테스트")
+    @DisplayName("자동차 이름이 비어있을 때(BLANK) 예외 메지시 정상 출력 테스트")
     void empty_name_exception_message_test(String carNameToken, String description) {
         assertThatThrownBy(() -> CarName.of(carNameToken))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -61,14 +61,14 @@ class CarNameTest {
     }
 
     private static Stream<Arguments> provideEmptyCarNameTokens() {
-        return TestDataProvider.provideOnlyBlankCarNameTokens();
+        return GlobalTestDataProvider.provideOnlyBlanksTokens();
     }
 
     private static Stream<Arguments> provideBlankCarNameTokens() {
-        return TestDataProvider.provideContainBlankCarNameTokens();
+        return GlobalTestDataProvider.provideContainBlankCarNameTokens();
     }
 
     private static Stream<Arguments> provideOversizeCarNameTokens() {
-        return TestDataProvider.provideOversizeCarNameTokens();
+        return GlobalTestDataProvider.provideOversizeCarNameTokens();
     }
 }

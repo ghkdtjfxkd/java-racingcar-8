@@ -30,7 +30,7 @@ public final class GlobalTestDataProvider {
         );
     }
 
-    public static Stream<Arguments> provideOnlyBlankCarNameTokens() {
+    public static Stream<Arguments> provideOnlyBlanksTokens() {
         return Stream.of(
                 Arguments.of("", "공백(EMPTY) 문자열-[길이: 0]"),
                 Arguments.of("", "공백(BLANK) 문자열-[길이: 0]"),
