@@ -1,6 +1,5 @@
 package racingcar.entry.domain.car;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,6 +17,15 @@ public class RacingCars {
         return new RacingCars(enrollCarsFrom(stream));
     }
 
+    public void updateCarPositions() {
+        entry.forEach(RacingCar::drive);
+    }
+
+    public Stream<Entry<String, Integer>> status() {
+        return entry.stream()
+                .map(racingcar -> Map.entry(racingcar.name(), racingcar.position()));
+    }
+
     private static List<RacingCar> enrollCarsFrom(Stream<String> stream) {
         return stream.map(RacingCars::register).toList();
     }
@@ -25,14 +33,4 @@ public class RacingCars {
     private static RacingCar register(String CarName) {
         return RacingCar.by(CarName);
     }
-
-    public void updateCarPositions() {
-        entry.forEach(RacingCar::drive);
-    }
-
-    public Stream<Entry<String, Integer>> lapScore() {
-        return entry.stream()
-                .map(racingcar -> Map.entry(racingcar.name(), racingcar.position()));
-    }
-
 }

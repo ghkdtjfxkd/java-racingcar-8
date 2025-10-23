@@ -12,13 +12,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import racingcar.GlobalTestDataProvider;
 
-class RacingCarNamesTest {
+class RacingParticipantsTest {
 
     @Test
     @DisplayName("입력이 `null`일 때, IllegalArgumentException() 예외 발생 테스트")
     void null_throws_IllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> RacingCarNames.from(null));
+                () -> RacingParticipants.from(null));
 
         assertThat(exception)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -29,7 +29,7 @@ class RacingCarNamesTest {
     @MethodSource("provideEmptyCarNameTokens")
     @DisplayName("입력이 비어있을 때(BLANK) 예외 메지시 정상 출력 테스트")
     void empty_input_exception_test(String carNameToken, String description) {
-        AssertionsForClassTypes.assertThatThrownBy(() -> RacingCarNames.from(carNameToken))
+        AssertionsForClassTypes.assertThatThrownBy(() -> RacingParticipants.from(carNameToken))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR]: 빈 입력은 올 수 없습니다.(BLANK)");
     }

@@ -1,21 +1,20 @@
 package racingcar.entry.domain.register;
 
-import java.util.Deque;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class RacingCarNames {
+public class RacingParticipants {
 
     private static final String DELIMITER = ",";
     private final NameTokens nameTokens;
 
-    private RacingCarNames(NameTokens nameTokens) {
+    private RacingParticipants(NameTokens nameTokens) {
         this.nameTokens = nameTokens;
     }
 
-    public static RacingCarNames from(String carNamesInput) {
+    public static RacingParticipants from(String carNamesInput) {
         requireNonBlank(carNamesInput);
-        return new RacingCarNames(NameTokens.of(extract(carNamesInput)));
+        return new RacingParticipants(NameTokens.of(extract(carNamesInput)));
     }
 
     private static void requireNonBlank(String carNamesInput) {
@@ -28,7 +27,7 @@ public class RacingCarNames {
         return List.of(carNamesInput.split(DELIMITER));
     }
 
-    public Stream<String> provide() {
+    public Stream<String> names() {
         return nameTokens.getUniqueCarNames();
     }
 }
