@@ -1,6 +1,6 @@
 package racingcar.entry;
 
-import racingcar.entry.domain.car.RacingCars;
+import racingcar.entry.domain.RacingCars;
 
 /**
  * <p>현재는 Repository 계층의 `개념적 표현`만을 위한 목적으로 작성되었습니다.

@@ -1,4 +1,4 @@
-package racingcar.entry.domain.car;
+package racingcar.entry.domain;
 
 class Mileage {
     private static final int SETUP_MILEAGE = 0;

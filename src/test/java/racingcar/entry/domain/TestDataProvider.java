@@ -1,4 +1,4 @@
-package racingcar.entry.domain.car;
+package racingcar.entry.domain;
 
 import java.util.stream.Stream;
 
