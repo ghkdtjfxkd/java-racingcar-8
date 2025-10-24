@@ -1,4 +1,4 @@
-package racingcar.io;
+package racingcar.io.input;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;

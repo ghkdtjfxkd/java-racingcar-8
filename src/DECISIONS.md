@@ -42,8 +42,10 @@
   - 결정:
   - 이유: 유연한 설계를 원해서 EDA로 설계했는데 굳이 car와 register랑 entry라는 관심사로 묶이는게 맞을까??
 ---
-
-
+- [x] 2025-10-24: 현재 설계에서 서비스 레이어가 필요할까? 관심사를 분리해놔서 하나의 관심사마다 애그리게이션 루트는 하나뿐인데, 굳이? 서비스랑 리포까지?
+  - 결정: 일단은 진행하자.
+  - 이유: 이미 각 모듈을 만들어놨기도 하고, 리포지토리까지 개념적으로 표현해놨는데 굳이 지울 필요는 없을 것 같다.
+---
 
 ## 설계
 <details>
@@ -71,3 +73,13 @@ Stream<Entry<String, Integer>>로 넘기자니 깔끔하지 않다고 느꼈다.
 굳이 ??
 </details>
 
+<details> <summary>컴포넌트 조립(Wiring) 책임과 main의 역할</summary>
+순수자바 CLI 환경이므로 InputView와 OutputView가 Application.main에 존재하는 것은 자연스럽다.
+io에 관련된 EventHandler들이 Adapter 역할을 하는 것으로 이해해도 될까??
+만약 그렇다면, main이 이 Handler들이 Adapter라는 건데 
+Adapter가 EventBus에 발행 (publish) 하거나 구독(subscribe) 시키는 역할도 맡아야 하는가?
+
+예를들어,
+InputView가 EventBus의 존재를 모르게 하려면, main에서 Adapter를 통해 InputView의 입력을 받아 
+이벤트로 변환하여 발행(publish)하는 역할까지 수행해야 하는지 그 범위가 헷갈린다.
+</details>
