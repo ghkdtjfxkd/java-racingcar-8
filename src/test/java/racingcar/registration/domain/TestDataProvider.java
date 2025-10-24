@@ -1,4 +1,4 @@
-package racingcar.entry.domain.register;
+package racingcar.registration.domain;
 
 import java.util.stream.Stream;
 

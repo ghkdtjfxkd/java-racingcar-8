@@ -1,4 +1,4 @@
-package racingcar.entry.domain.register;
+package racingcar.registration.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

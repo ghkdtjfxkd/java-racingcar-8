@@ -1,4 +1,4 @@
-package racingcar.entry.domain.register;
+package racingcar.registration.domain;
 
 public class ParticipantName {
 

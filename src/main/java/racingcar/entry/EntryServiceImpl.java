@@ -3,7 +3,7 @@ package racingcar.entry;
 import java.util.List;
 import java.util.Map.Entry;
 import racingcar.entry.domain.car.RacingCars;
-import racingcar.entry.domain.register.Participants;
+import racingcar.registration.domain.Participants;
 import racingcar.entry.dto.ScoreResponse;
 
 public class EntryServiceImpl implements EntryService {
