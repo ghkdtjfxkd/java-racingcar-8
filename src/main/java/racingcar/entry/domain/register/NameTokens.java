@@ -7,10 +7,10 @@ import java.util.stream.Stream;
 
 public class NameTokens {
 
-    private final List<CarName> carNames;
+    private final List<ParticipantName> participantNames;
 
-    private NameTokens(List<CarName> carNames) {
-        this.carNames = carNames;
+    private NameTokens(List<ParticipantName> participantNames) {
+        this.participantNames = participantNames;
     }
 
     static NameTokens of(List<String> nameTokens) {
@@ -32,18 +32,18 @@ public class NameTokens {
         return new HashSet<>(nameTokens);
     }
 
-    private static List<CarName> uniqueCarNamesFrom(List<String> nameTokens) {
+    private static List<ParticipantName> uniqueCarNamesFrom(List<String> nameTokens) {
         return nameTokens.stream()
                 .map(NameTokens::uniqueName)
                 .toList();
     }
 
-    private static CarName uniqueName(String unique) {
-        return CarName.of(unique);
+    private static ParticipantName uniqueName(String unique) {
+        return ParticipantName.of(unique);
     }
 
     Stream<String> getUniqueCarNames() {
-        return carNames.stream()
-                .map(CarName::get);
+        return participantNames.stream()
+                .map(ParticipantName::get);
     }
 }

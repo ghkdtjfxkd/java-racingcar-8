@@ -1,20 +1,20 @@
 package racingcar.entry.domain.register;
 
-public class CarName {
+public class ParticipantName {
 
     private static final short MAX_LENGTH = 5;
 
     private final String name;
 
-    private CarName(String nameToken) {
+    private ParticipantName(String nameToken) {
         this.name = nameToken;
     }
 
-    static CarName of(String nameToken) {
+    static ParticipantName of(String nameToken) {
         requireNonEmpty(nameToken);
         requireNoWhitespace(nameToken);
         requireAcceptableMaxLength(nameToken);
-        return new CarName(nameToken);
+        return new ParticipantName(nameToken);
     }
 
     private static void requireNonEmpty(String name) {

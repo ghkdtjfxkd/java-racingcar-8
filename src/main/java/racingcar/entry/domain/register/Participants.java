@@ -3,18 +3,18 @@ package racingcar.entry.domain.register;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class RacingParticipants {
+public class Participants {
 
     private static final String DELIMITER = ",";
     private final NameTokens nameTokens;
 
-    private RacingParticipants(NameTokens nameTokens) {
+    private Participants(NameTokens nameTokens) {
         this.nameTokens = nameTokens;
     }
 
-    public static RacingParticipants from(String carNamesInput) {
+    public static Participants from(String carNamesInput) {
         requireNonBlank(carNamesInput);
-        return new RacingParticipants(NameTokens.of(extract(carNamesInput)));
+        return new Participants(NameTokens.of(extract(carNamesInput)));
     }
 
     private static void requireNonBlank(String carNamesInput) {

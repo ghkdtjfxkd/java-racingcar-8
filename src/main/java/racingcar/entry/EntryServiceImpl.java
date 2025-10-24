@@ -3,7 +3,7 @@ package racingcar.entry;
 import java.util.List;
 import java.util.Map.Entry;
 import racingcar.entry.domain.car.RacingCars;
-import racingcar.entry.domain.register.RacingParticipants;
+import racingcar.entry.domain.register.Participants;
 import racingcar.entry.dto.ScoreResponse;
 
 public class EntryServiceImpl implements EntryService {
@@ -40,7 +40,7 @@ public class EntryServiceImpl implements EntryService {
     }
 
     private RacingCars carsFrom(String carNamesInput) {
-        RacingParticipants participants = RacingParticipants.from(carNamesInput);
+        Participants participants = Participants.from(carNamesInput);
         return RacingCars.from(participants.names());
     }
 }
