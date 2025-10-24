@@ -1,5 +1,7 @@
 package racingcar.common.schema;
 
+import java.util.List;
+import java.util.Map.Entry;
 import racingcar.entry.EntryEventHandler;
 
 public class EntryEvents {
@@ -12,4 +14,6 @@ public class EntryEvents {
      * <b>구독:</b>
      */
     public record CarsPrepared() {}
+
+    public record RacingCarsMoved(List<Entry<String, Integer>> carsPositions) {}
 }

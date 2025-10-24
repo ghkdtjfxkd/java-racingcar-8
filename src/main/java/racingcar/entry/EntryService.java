@@ -1,10 +1,10 @@
 package racingcar.entry;
 
 import java.util.List;
-import racingcar.entry.dto.ScoreResponse;
+import java.util.Map.Entry;
 
 public interface EntryService {
     void registerCars(List<String> carNames);
     void executeRound();
-    List<ScoreResponse> currentScores();
+    List<Entry<String, Integer>> currentScores();
 }

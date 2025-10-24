@@ -24,14 +24,9 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public List<ScoreResponse> currentScores() {
+    public List<Entry<String, Integer>> currentScores() {
         return carsInRace().status()
-                .map(this::score)
                 .toList();
-    }
-
-    private ScoreResponse score(Entry<String, Integer> lapScore) {
-        return ScoreResponse.of(lapScore.getKey(), lapScore.getValue());
     }
 
     private RacingCars carsInRace() {
