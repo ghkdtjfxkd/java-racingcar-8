@@ -12,4 +12,5 @@ public class OutputEvents {
      * <b>구독:</b> {@link RaceEventHandler}
      */
     public record LapResultAnnounced() {}
+    public record RaceResultAnnounced() {}
 }

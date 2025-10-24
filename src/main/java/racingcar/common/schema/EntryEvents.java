@@ -16,4 +16,5 @@ public class EntryEvents {
     public record CarsPrepared() {}
 
     public record RacingCarsMoved(List<Entry<String, Integer>> carsPositions) {}
+    public record FinalCarPositionsRecorded(List<Entry<String, Integer>> carsPositions) {}
 }
