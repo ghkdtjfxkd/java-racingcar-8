@@ -27,7 +27,7 @@ public class Participants {
         return List.of(carNamesInput.split(DELIMITER));
     }
 
-    public Stream<String> names() {
-        return nameTokens.getUniqueCarNames();
+    public List<String> names() {
+        return nameTokens.getUniqueCarNames().toList();
     }
 }

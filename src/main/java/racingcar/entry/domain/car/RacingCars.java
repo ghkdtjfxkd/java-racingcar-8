@@ -13,7 +13,7 @@ public class RacingCars {
         this.entry = List.copyOf(entry);
     }
 
-    public static RacingCars from(Stream<String> stream) {
+    public static RacingCars from(List<String> stream) {
         return new RacingCars(enrollCarsFrom(stream));
     }
 
@@ -26,8 +26,10 @@ public class RacingCars {
                 .map(racingcar -> Map.entry(racingcar.name(), racingcar.position()));
     }
 
-    private static List<RacingCar> enrollCarsFrom(Stream<String> stream) {
-        return stream.map(RacingCars::register).toList();
+    private static List<RacingCar> enrollCarsFrom(List<String> carNames) {
+        return carNames.stream()
+                .map(RacingCars::register)
+                .toList();
     }
 
     private static RacingCar register(String CarName) {

@@ -3,7 +3,6 @@ package racingcar.entry;
 import java.util.List;
 import java.util.Map.Entry;
 import racingcar.entry.domain.car.RacingCars;
-import racingcar.registration.domain.Participants;
 import racingcar.entry.dto.ScoreResponse;
 
 public class EntryServiceImpl implements EntryService {
@@ -15,8 +14,8 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public void registerCars(String carNamesInput) {
-        racingEntryRepository.save(carsFrom(carNamesInput));
+    public void registerCars(List<String> carNames) {
+        racingEntryRepository.save(carsFrom(carNames));
     }
 
     @Override
@@ -39,8 +38,7 @@ public class EntryServiceImpl implements EntryService {
         return racingEntryRepository.getEntry();
     }
 
-    private RacingCars carsFrom(String carNamesInput) {
-        Participants participants = Participants.from(carNamesInput);
-        return RacingCars.from(participants.names());
+    private RacingCars carsFrom(List<String> carNames) {
+        return RacingCars.from(carNames);
     }
 }
