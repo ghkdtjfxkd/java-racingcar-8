@@ -1,10 +1,18 @@
 package racingcar.race;
 
+import java.util.concurrent.CompletableFuture;
 import racingcar.common.EventBus;
+import racingcar.common.schema.EntryEvents.CarsPrepared;
 import racingcar.common.schema.InputEvents.UserEnteredLapCount;
-import racingcar.common.schema.RaceEvents;
+import racingcar.common.schema.OutputEvents.LapResultAnnounced;
+import racingcar.common.schema.RaceEvents.LapExecuted;
+import racingcar.common.schema.RaceEvents.RaceCompleted;
 
 public class RaceEventHandler {
+
+    private final CompletableFuture<CarsPrepared> carsPreparedFuture = new CompletableFuture<>();
+    private final CompletableFuture<UserEnteredLapCount> lapCountFuture = new CompletableFuture<>();
+
     private final EventBus eventBus;
     private final RaceService raceService;
 
@@ -12,19 +20,41 @@ public class RaceEventHandler {
         this.eventBus = eventBus;
         this.raceService = raceService;
         registerHandlers();
+        CompletableFuture.allOf(carsPreparedFuture, lapCountFuture)
+                .thenRun(this::startRace);
     }
 
     private void registerHandlers() {
         eventBus.subscribe(UserEnteredLapCount.class, this::handleUserEnteredLapCount);
-        // 랩 결과 출력함
+        eventBus.subscribe(CarsPrepared.class, this::handleCarsPrepared);
+        eventBus.subscribe(LapResultAnnounced.class, this::handleLapResultAnnounced);
     }
 
-    private void handleUserEnteredLapCount(UserEnteredLapCount userEnteredLapCount) {
+    private void startRace() {
+        UserEnteredLapCount userEnteredLapCount = lapCountFuture.join();
         raceService.startRace(userEnteredLapCount.input());
 
+        processRace();
+    }
+
+    private void handleLapResultAnnounced(LapResultAnnounced lapResultAnnounced) {
         if(!raceService.isFinished()) {
-            raceService.executeNextLap();
-//            eventBus.publish(new RaceEvents);
+            processRace();
+            return;
         }
+        eventBus.publish(new RaceCompleted());
+    }
+
+    private void processRace() {
+        raceService.executeNextLap();
+        eventBus.publish(new LapExecuted());
+    }
+
+    private void handleUserEnteredLapCount(UserEnteredLapCount event) {
+        this.lapCountFuture.complete(event);
+    }
+
+    private void handleCarsPrepared(CarsPrepared event) {
+        this.carsPreparedFuture.complete(event);
     }
 }
