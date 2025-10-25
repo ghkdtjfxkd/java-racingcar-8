@@ -66,5 +66,45 @@ CLI 환경의 순수 자바로 진행되는 과제에서 이런 아키텍처는 
 ---
 
 ## 이슈 
-- [ ] 기능 테스트가 통과하지 못하는 이슈
-  - SingleThreadExecutor 사용으로 생긴 문제 -> 
+- [x] 기능 테스트를 통과하지 못하는 이슈
+  - 병렬처리 과정이 있는데 SingleThreadExecutor 사용으로 생긴 문제 -> newVirtualThreadPerTaskExecutor 사용하도록 변경해서 해결
+- [ ] 예외처리 이슈
+  - 잘못된 입력에 `IllegalArgumentException`이 발생해도 나머지 스레드가 살아있어 프로그램이 종료되지 않음.
+
+---
+
+#### 1. 병렬 처리
+`ParticipantsValidated` 이벤트 발행 시, 두 핸들러가 **병렬로 실행**됩니다:
+- `EntryEventHandler`: 자동차 등록
+- `InputEventAdapter`: 랩 카운트 입력
+
+두 작업은 독립적이며, `CompletableFuture.allOf()`로 동기화됩니다.
+
+#### 2. 순서 보장
+- **이벤트 체인**: 각 이벤트는 이전 이벤트 처리 완료 후 발행
+- **Lap 순서**: 각 Lap은 이전 Lap의 출력 완료 후 실행
+
+#### 3. 동시성 제어
+```java
+private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+```
+- **VirtualThread**: 경량 스레드로 블로킹 I/O 처리
+- **ConcurrentHashMap**: 멀티스레드 환경에서 안전한 핸들러 관리
+- **이벤트 체인**: 순서가 필요한 작업은 체인으로 연결
+
+### 이벤트별 책임
+
+| 이벤트 | 발행자 | 구독자 | 역할 |
+|--------|--------|--------|------|
+| `StartEvent` | Application | InputEventAdapter | 게임 시작 신호 |
+| `UserEnteredParticipants` | InputEventAdapter | RegistrationEventHandler | 참가자 이름 전달 |
+| `ParticipantsValidated` | RegistrationEventHandler | EntryEventHandler, InputEventAdapter | 검증 완료 신호 |
+| `CarsPrepared` | EntryEventHandler | RaceEventHandler | 자동차 준비 완료 |
+| `UserEnteredLapCount` | InputEventAdapter | RaceEventHandler | 랩 카운트 전달 |
+| `RaceStarted` | RaceEventHandler | EntryEventHandler | 레이스 시작 |
+| `FirstLapRacingCarsMoved` | EntryEventHandler | OutputEventAdapter | 첫 랩 결과 |
+| `RacingCarsMoved` | EntryEventHandler | OutputEventAdapter | 각 랩 결과 |
+| `LapResultAnnounced` | OutputEventAdapter | RaceEventHandler | 출력 완료 신호 |
+| `RaceCompleted` | RaceEventHandler | EntryEventHandler | 레이스 종료 |
+| `FinalCarPositionsRecorded` | EntryEventHandler | ResultEventHandler | 최종 위치 전달 |
+| `WinnersDetermined` | ResultEventHandler | Application | 우승자 결정 |
