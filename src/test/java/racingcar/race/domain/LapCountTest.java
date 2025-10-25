@@ -20,15 +20,15 @@ class LapCountTest {
     @Test
     @DisplayName("랩 횟수 줄이기 테스트")
     void decrease_lap_count_test() {
-        LapCount OneLapRemaining = LapCount.of(1);
+        LapCount OneLapRemaining = LapCount.from("1");
         assertFalse(OneLapRemaining.decrease().hasMore());
     }
 
     @ParameterizedTest(name = "[{index}] 0보다 큰 랩 횟수")
     @MethodSource("provideCorrectLapCounts")
     @DisplayName("잔여 랩 횟수 존재 시 true 테스트")
-    void has_more_lap_count_test(int lapCount) {
-        assertTrue(LapCount.of(lapCount).hasMore());
+    void has_more_lap_count_test(String lapCount) {
+        assertTrue(LapCount.from(lapCount).hasMore());
     }
 
     private static Stream<String> provideWrongLapCounts() {
@@ -40,12 +40,12 @@ class LapCountTest {
         );
     }
 
-    private static Stream<Integer> provideCorrectLapCounts() {
+    private static Stream<String> provideCorrectLapCounts() {
         return Stream.of(
-                1,
-                2,
-                10,
-                11111
+                "1",
+                "2",
+                "10",
+                "11111"
         );
     }
 }

@@ -25,7 +25,7 @@ public class Race {
 
     private void requireNonBlank(String lapCountInput) {
         if(lapCountInput == null || lapCountInput.isBlank()) {
-            throw new IllegalArgumentException("랩 값 입력 비어있음");
+            throw new IllegalArgumentException(ErrorMessage.IS_BLANK.getMessage());
         }
     }
 }
