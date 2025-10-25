@@ -3,13 +3,12 @@ package racingcar.entry;
 import java.util.List;
 import java.util.Map.Entry;
 import racingcar.entry.domain.RacingCars;
-import racingcar.entry.dto.ScoreResponse;
 
 public class EntryServiceImpl implements EntryService {
 
     private final RacingEntryRepository racingEntryRepository;
 
-    private EntryServiceImpl() {
+    public EntryServiceImpl() {
         this.racingEntryRepository = new RacingEntryRepository();
     }
 

@@ -7,6 +7,7 @@ import racingcar.common.schema.InputEvents.UserEnteredLapCount;
 import racingcar.common.schema.OutputEvents.LapResultAnnounced;
 import racingcar.common.schema.RaceEvents.LapExecuted;
 import racingcar.common.schema.RaceEvents.RaceCompleted;
+import racingcar.common.schema.RaceEvents.RaceStarted;
 
 public class RaceEventHandler {
 
@@ -33,22 +34,20 @@ public class RaceEventHandler {
     private void startRace() {
         UserEnteredLapCount userEnteredLapCount = lapCountFuture.join();
         raceService.startRace(userEnteredLapCount.input());
+        raceService.executeNextLap();
 
-        processRace();
+        eventBus.publish(new RaceStarted());
     }
 
     private void handleLapResultAnnounced(LapResultAnnounced lapResultAnnounced) {
         if(!raceService.isFinished()) {
-            processRace();
+            raceService.executeNextLap();
+            eventBus.publish(new LapExecuted());
             return;
         }
         eventBus.publish(new RaceCompleted());
     }
 
-    private void processRace() {
-        raceService.executeNextLap();
-        eventBus.publish(new LapExecuted());
-    }
 
     private void handleUserEnteredLapCount(UserEnteredLapCount event) {
         this.lapCountFuture.complete(event);

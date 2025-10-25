@@ -2,8 +2,8 @@ package racingcar.registration;
 
 import java.util.List;
 import racingcar.common.EventBus;
-import racingcar.common.schema.InputEvents;
-import racingcar.common.schema.RegistrationEvents;
+import racingcar.common.schema.InputEvents.UserEnteredParticipants;
+import racingcar.common.schema.RegistrationEvents.ParticipantsValidated;
 
 public class RegistrationEventHandler {
 
@@ -17,11 +17,11 @@ public class RegistrationEventHandler {
     }
 
     private void registerHandlers() {
-        eventBus.subscribe(InputEvents.UserEnteredParticipants.class, this::handleUserEnteredParticipants);
+        eventBus.subscribe(UserEnteredParticipants.class, this::handleUserEnteredParticipants);
     }
 
-    private void handleUserEnteredParticipants(InputEvents.UserEnteredParticipants input) {
+    private void handleUserEnteredParticipants(UserEnteredParticipants input) {
         List<String> names = registrationService.registerParticipants(input.names());
-        eventBus.publish(new RegistrationEvents.ParticipantsValidated(names));
+        eventBus.publish(new ParticipantsValidated(names));
     }
 }

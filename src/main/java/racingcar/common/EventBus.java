@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 public class EventBus {
     private final Map<Class<?>, List<EventHandler<?>>> handlers = new ConcurrentHashMap<>();
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
     public <T> void subscribe(Class<T> eventType, EventHandler<T> handler) {
         handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
@@ -32,6 +32,10 @@ public class EventBus {
 
     private void process(Object event, EventHandler<Object> typedHandler) {
         typedHandler.handle(event);
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
     }
 
     public <T> void unsubscribe(Class<T> eventType, EventHandler<T> handler) {

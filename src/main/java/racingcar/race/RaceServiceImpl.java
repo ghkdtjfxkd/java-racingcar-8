@@ -24,7 +24,7 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     public boolean isFinished() {
-        return raceInProgress().hasRemainingLaps();
+        return !raceInProgress().hasRemainingLaps();
     }
 
     private Race raceInProgress() {
