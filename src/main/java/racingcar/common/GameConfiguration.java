@@ -1,7 +1,5 @@
-package racingcar.config;
+package racingcar.common;
 
-import racingcar.common.EventBus;
-import racingcar.common.RacingCarGames;
 import racingcar.entry.EntryEventHandler;
 import racingcar.entry.EntryServiceImpl;
 import racingcar.io.input.InputEventAdapter;
@@ -13,9 +11,21 @@ import racingcar.registration.RegistrationServiceImpl;
 import racingcar.result.ResultEventHandler;
 
 public class GameConfiguration {
-    public static RacingCarGames setupGame(EventBus eventBus) {
+
+    private final RacingCarGames racingCarGames;
+
+    private GameConfiguration(RacingCarGames racingCarGames) {
+        this.racingCarGames = racingCarGames;
+    }
+
+    public static GameConfiguration setup() {
+        EventBus eventBus = EventBus.getInstance();
         registerEventHandlers(eventBus);
-        return new RacingCarGames(eventBus);
+        return new GameConfiguration(RacingCarGames.with(eventBus));
+    }
+
+    public RacingCarGames getGames() {
+        return racingCarGames;
     }
 
     private static void registerEventHandlers(EventBus eventBus) {
