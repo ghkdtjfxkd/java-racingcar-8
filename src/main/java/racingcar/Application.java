@@ -9,6 +9,7 @@ import racingcar.config.GameConfiguration;
 import racingcar.io.output.OutputAdapter;
 
 public class Application {
+
     public static void main(String[] args) {
         try {
             runWithEventDriven();
@@ -21,18 +22,21 @@ public class Application {
         EventBus eventBus = new EventBus();
         CompletableFuture<List<String>> resultFuture = new CompletableFuture<>();
 
-        RacingCarGames game = GameConfiguration.setupGame(eventBus);
+        eventBus.setExceptionCallback(resultFuture::completeExceptionally);
         subscribeGameResult(eventBus, resultFuture);
 
+        RacingCarGames game = GameConfiguration.setupGame(eventBus);
         game.start();
 
         OutputAdapter.announceWinners(resultFuture.join());
     }
 
     private static void subscribeGameResult(EventBus eventBus, CompletableFuture<List<String>> resultFuture) {
-        eventBus.subscribe(WinnersDetermined.class, racingResult -> {
-            resultFuture.complete(racingResult.names());
-            eventBus.shutdown();
-        });
+        eventBus.subscribe(WinnersDetermined.class,
+                racingResult -> {
+                    resultFuture.complete(racingResult.names());
+                    eventBus.shutdown();
+                }
+        );
     }
 }

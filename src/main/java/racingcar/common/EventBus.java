@@ -6,12 +6,20 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class EventBus {
     private final Map<Class<?>, List<EventHandler<?>>> handlers = new ConcurrentHashMap<>();
     private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+    private Consumer<Exception> exceptionCallback;
+
+    public void setExceptionCallback(Consumer<Exception> callback) {
+        this.exceptionCallback = callback;
+    }
 
     public <T> void subscribe(Class<T> eventType, EventHandler<T> handler) {
         handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
@@ -52,7 +60,13 @@ public class EventBus {
     }
 
     private void process(Object event, EventHandler<Object> typedHandler) {
-        typedHandler.handle(event);
+        try {
+            typedHandler.handle(event);
+        } catch (Exception e) {
+            if(exceptionCallback != null) {
+                exceptionCallback.accept(new IllegalArgumentException(e));
+            }
+        }
     }
 
     public <T> void unsubscribe(Class<T> eventType, EventHandler<T> handler) {
@@ -63,6 +77,11 @@ public class EventBus {
     }
 
     public void shutdown() {
+        executor.shutdown();
+    }
+
+    public void handleException(Exception e) {
+        exceptionCallback.accept(e);
         executor.shutdown();
     }
 }

@@ -16,11 +16,22 @@
 이미 받은 자동차 이름들을 검증하고 경주 준비하는 작업을 비동기로 처리한다면
 시도 횟수 입력 즉시 레이스를 시작할 수 있다고 생각했습니다.
 
+<details>
+<summary>그러나..</summary>
+MockedStatic이 비동기 VirtualThread에 전파되지 않아 Mock 값(4,3) 대신 실제 Random 값 호출하는 이슈로
+테스트 환경에서는 어쩔 수 없이 `ApplicationTest.기능_테스트()`의 테스트에 맞게끔 동기적으로 동작하게 만들었습니다.
+
+</details>
+
 또한 EDA를 통해 관심사를 분리하면
-- Registration 도메인: 자동차 이름 검증만(Entry에서 분리 예정) 
-- Entry 도메인: 자동차 움직임만
-- Race 도메인: 경기 진행만
-- Result 도메인: 경기 결과만
+- InputAdapter : InputView와의 소통만
+- OutputAdapter : OutputView와의 소통만
+
+- Registration 도메인: 자동차 이름 검증 
+- Entry 도메인: 자동차 움직임
+- Race 도메인: 경기 진행
+- Result 도메인: 경기 결과
+
 각 도메인이 이벤트로만 통신하므로 응집도 높고 변경에 유연한 구조를 만들 수 있다고 생각했습니다.
 
 ### 오버엔지니어링
@@ -31,7 +42,7 @@ CLI 환경의 순수 자바로 진행되는 과제에서 이런 아키텍처는 
 
 ### 🧩EventBus
 - [x] Event Bus
-- [ ] Event Bus 에서 사용될 이벤트 스키마 정의
+- [x] Event Bus 에서 사용될 이벤트 스키마 정의
 
 ---
 ### 📝 Registration
@@ -76,9 +87,12 @@ CLI 환경의 순수 자바로 진행되는 과제에서 이런 아키텍처는 
     game.start();
     subscribeGameResult(eventBus, resultFuture);
     ```
-- [ ] 예외처리 이슈
+- [x] 예외처리 이슈
   - 잘못된 입력에 `IllegalArgumentException`이 발생해도 나머지 스레드가 살아있어 프로그램이 종료되지 않음.
-
+  - 자동차 이름 입력 시 잘못된 입력을 했을 경우는 정상적으로 예외 발생 및 종료되는데, 실행 횟수 입력 시에는 종료되지 않음.
+  - RaceEventHandler에서 startRace() 는 이벤트 버스를 통해 실행되지 않음.
+  - CompletableFuture로 값을 받아서 동작하기 때문에 event bus의 예외처리 로직을 거치지 않음
+  - 이벤트 버스가 이벤트 버스 내에서 발생한 예외를 처리할 수 있도록 직접 요청하는 매서드 추가로 해결
 ---
 
 #### 1. 병렬 처리

@@ -34,10 +34,14 @@ public class RaceEventHandler {
     private void startRace() {
         UserEnteredLapCount userEnteredLapCount = lapCountFuture.join();
 
-        raceService.startRace(userEnteredLapCount.input());
-        raceService.executeNextLap();
+        try {
+            raceService.startRace(userEnteredLapCount.input());
+            raceService.executeNextLap();
 
-        eventBus.publish(new RaceStarted());
+            eventBus.publish(new RaceStarted());
+        } catch (IllegalArgumentException e) {
+            eventBus.handleException(e);
+        }
     }
 
     private void handleLapResultAnnounced(LapResultAnnounced lapResultAnnounced) {
