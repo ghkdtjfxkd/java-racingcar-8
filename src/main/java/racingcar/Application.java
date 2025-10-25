@@ -19,7 +19,7 @@ public class Application {
     }
 
     private static void runWithEventDriven() {
-        EventBus eventBus = new EventBus();
+        EventBus eventBus = EventBus.getInstance();
         CompletableFuture<List<String>> resultFuture = new CompletableFuture<>();
 
         eventBus.setExceptionCallback(resultFuture::completeExceptionally);

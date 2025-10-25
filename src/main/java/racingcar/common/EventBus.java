@@ -6,16 +6,26 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 public class EventBus {
+
+    private static final class SingletonHolder {
+        private static final EventBus INSTANCE = new EventBus();
+    }
+
     private final Map<Class<?>, List<EventHandler<?>>> handlers = new ConcurrentHashMap<>();
     private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
     private Consumer<Exception> exceptionCallback;
+
+    private EventBus() {}
+
+    public static synchronized EventBus getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
 
     public void setExceptionCallback(Consumer<Exception> callback) {
         this.exceptionCallback = callback;
@@ -63,9 +73,13 @@ public class EventBus {
         try {
             typedHandler.handle(event);
         } catch (Exception e) {
-            if(exceptionCallback != null) {
-                exceptionCallback.accept(new IllegalArgumentException(e));
-            }
+            exceptionAccept(e);
+        }
+    }
+
+    private void exceptionAccept(Exception e) {
+        if(exceptionCallback != null) {
+            exceptionCallback.accept(new IllegalArgumentException(e));
         }
     }
 

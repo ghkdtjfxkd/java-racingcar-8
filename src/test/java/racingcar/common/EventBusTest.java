@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class EventBusTest {
-    private final EventBus eventBus = new EventBus();
+    private final EventBus eventBus = EventBus.getInstance();
 
     private record DummyStringEvent(String message) {
     }
