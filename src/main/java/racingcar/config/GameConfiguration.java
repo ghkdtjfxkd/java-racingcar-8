@@ -19,8 +19,8 @@ public class GameConfiguration {
     }
 
     private static void registerEventHandlers(EventBus eventBus) {
-        new InputEventAdapter(eventBus);
         new OutputEventAdapter(eventBus);
+        new InputEventAdapter(eventBus);
 
         new RegistrationEventHandler(eventBus, new RegistrationServiceImpl());
         new EntryEventHandler(eventBus,  new EntryServiceImpl());

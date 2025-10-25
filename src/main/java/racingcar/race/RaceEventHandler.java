@@ -26,13 +26,14 @@ public class RaceEventHandler {
     }
 
     private void registerHandlers() {
-        eventBus.subscribe(UserEnteredLapCount.class, this::handleUserEnteredLapCount);
         eventBus.subscribe(CarsPrepared.class, this::handleCarsPrepared);
+        eventBus.subscribe(UserEnteredLapCount.class, this::handleUserEnteredLapCount);
         eventBus.subscribe(LapResultAnnounced.class, this::handleLapResultAnnounced);
     }
 
     private void startRace() {
         UserEnteredLapCount userEnteredLapCount = lapCountFuture.join();
+
         raceService.startRace(userEnteredLapCount.input());
         raceService.executeNextLap();
 
@@ -47,7 +48,6 @@ public class RaceEventHandler {
         }
         eventBus.publish(new RaceCompleted());
     }
-
 
     private void handleUserEnteredLapCount(UserEnteredLapCount event) {
         this.lapCountFuture.complete(event);

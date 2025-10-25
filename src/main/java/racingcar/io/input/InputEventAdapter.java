@@ -5,8 +5,8 @@ import racingcar.common.schema.InputEvents.UserEnteredLapCount;
 import racingcar.common.schema.InputEvents.UserEnteredParticipants;
 import racingcar.common.schema.RegistrationEvents.ParticipantsValidated;
 import racingcar.common.schema.StartEvent;
-import racingcar.dto.LapCountRequest;
-import racingcar.dto.RacingCarNamesRequest;
+import racingcar.dto.request.LapCountRequest;
+import racingcar.dto.request.RacingCarNamesRequest;
 
 public class InputEventAdapter {
 

@@ -11,9 +11,7 @@ class RandomPedalingStrategy implements PedalingStrategy {
 
     @Override
     public boolean isEffective() {
-        int value = pushingPedal();
-        System.out.println("Randoms called: " + value);  // 추가
-        return value >= REPULSIVE_OF_PEDAL;
+        return pushingPedal() >= REPULSIVE_OF_PEDAL;
     }
 
     private int pushingPedal() {

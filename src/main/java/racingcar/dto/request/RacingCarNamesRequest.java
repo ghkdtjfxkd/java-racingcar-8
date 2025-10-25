@@ -1,4 +1,4 @@
-package racingcar.dto;
+package racingcar.dto.request;
 
 public record RacingCarNamesRequest(String rawInput) {
     public static RacingCarNamesRequest from(String rawInput) {

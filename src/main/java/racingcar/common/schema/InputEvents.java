@@ -18,9 +18,8 @@ public class InputEvents {
     public record UserEnteredParticipants(String names) {
     }
 
-
     /**
-     * 사용자의 경기 횟수 입력 이벤트
+     * 사용자가 경기 횟수 입력함 이벤트
      * <p>
      * <b>발행:</b> {@link InputEventAdapter}
      * <br>

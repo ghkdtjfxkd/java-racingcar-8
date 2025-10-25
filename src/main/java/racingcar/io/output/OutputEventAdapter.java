@@ -4,7 +4,7 @@ import racingcar.common.EventBus;
 import racingcar.common.schema.EntryEvents.FirstLapRacingCarsMoved;
 import racingcar.common.schema.EntryEvents.RacingCarsMoved;
 import racingcar.common.schema.OutputEvents.LapResultAnnounced;
-import racingcar.dto.RaceStateResponse;
+import racingcar.dto.response.RaceStateResponse;
 
 // EDA 전용
 public class OutputEventAdapter {

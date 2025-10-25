@@ -1,7 +1,7 @@
 package racingcar.io.output;
 
-import racingcar.dto.RaceStateResponse;
-import racingcar.dto.RacingResultResponse;
+import racingcar.dto.response.RaceStateResponse;
+import racingcar.dto.response.RacingResultResponse;
 
 public class OutputView {
 

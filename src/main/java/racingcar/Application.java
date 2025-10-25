@@ -6,28 +6,26 @@ import racingcar.common.EventBus;
 import racingcar.common.RacingCarGames;
 import racingcar.common.schema.ResultEvents.WinnersDetermined;
 import racingcar.config.GameConfiguration;
-import racingcar.dto.RacingResultResponse;
 import racingcar.io.output.OutputAdapter;
-import racingcar.io.output.OutputEventAdapter;
-import racingcar.io.output.OutputView;
 
 public class Application {
     public static void main(String[] args) {
         try {
-            run();
+            runWithEventDriven();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    private static void run() {
+    private static void runWithEventDriven() {
         EventBus eventBus = new EventBus();
         CompletableFuture<List<String>> resultFuture = new CompletableFuture<>();
 
         RacingCarGames game = GameConfiguration.setupGame(eventBus);
+        subscribeGameResult(eventBus, resultFuture);
+
         game.start();
 
-        subscribeGameResult(eventBus, resultFuture);
         OutputAdapter.announceWinners(resultFuture.join());
     }
 

@@ -1,8 +1,8 @@
 package racingcar.io.input;
 
 import camp.nextstep.edu.missionutils.Console;
-import racingcar.dto.LapCountRequest;
-import racingcar.dto.RacingCarNamesRequest;
+import racingcar.dto.request.LapCountRequest;
+import racingcar.dto.request.RacingCarNamesRequest;
 
 class InputView {
 
@@ -19,7 +19,7 @@ class InputView {
         return Console.readLine();
     }
 
-    public static void close() {
+    static void close() {
         Console.close();
     }
 }

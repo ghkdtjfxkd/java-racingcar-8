@@ -4,6 +4,7 @@ import racingcar.io.output.OutputEventAdapter;
 import racingcar.race.RaceEventHandler;
 
 public class OutputEvents {
+
     /**
      * 랩 내역 출력 완료 이벤트
      * <p>
@@ -12,5 +13,4 @@ public class OutputEvents {
      * <b>구독:</b> {@link RaceEventHandler}
      */
     public record LapResultAnnounced() {}
-    public record RaceResultAnnounced() {}
 }

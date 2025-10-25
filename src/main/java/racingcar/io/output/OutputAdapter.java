@@ -1,7 +1,7 @@
 package racingcar.io.output;
 
 import java.util.List;
-import racingcar.dto.RacingResultResponse;
+import racingcar.dto.response.RacingResultResponse;
 
 // Application 전용
 public class OutputAdapter {

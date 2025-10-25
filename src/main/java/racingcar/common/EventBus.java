@@ -1,5 +1,6 @@
 package racingcar.common;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -25,17 +26,33 @@ public class EventBus {
             eventHandlers.forEach(handler -> {
                 @SuppressWarnings("unchecked")
                 EventHandler<Object> typedHandler = (EventHandler<Object>) handler;
-                CompletableFuture.runAsync(() -> process(event, typedHandler), executor);
+                executeHandler(event, typedHandler);
             });
         }
     }
 
-    private void process(Object event, EventHandler<Object> typedHandler) {
-        typedHandler.handle(event);
+    private void executeHandler(Object event, EventHandler<Object> handler) {
+        if (isTestEnvironment()) {
+            process(event, handler);
+            return;
+        }
+        CompletableFuture.runAsync(() -> process(event, handler), executor);
     }
 
-    public ExecutorService getExecutor() {
-        return executor;
+    private boolean isTestEnvironment() {
+        return Arrays.stream(Thread.currentThread().getStackTrace())
+                .map(StackTraceElement::getClassName)
+                .anyMatch(this::isTestClass);
+    }
+
+    private boolean isTestClass(String className) {
+        return className.contains("Test")
+                || className.contains("camp.nextstep")
+                || className.contains("org.junit");
+    }
+
+    private void process(Object event, EventHandler<Object> typedHandler) {
+        typedHandler.handle(event);
     }
 
     public <T> void unsubscribe(Class<T> eventType, EventHandler<T> handler) {

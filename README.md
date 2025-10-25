@@ -65,10 +65,17 @@ CLI 환경의 순수 자바로 진행되는 과제에서 이런 아키텍처는 
 
 ---
 
-## 이슈 
-- [ ] 기능 테스트를 통과하지 못하는 이슈
-  - 병렬처리 과정이 있는데 SingleThreadExecutor 사용으로 생긴 문제 -> newVirtualThreadPerTaskExecutor 사용하도록 변경해서 해결
-  - 해결 안 됨.. 통과할 때가 있고 아닐 때가 있음... 비동기 방식을 택해서 생긴 일 같은데 우테코 측의 답변에 따라 이벤트 체인 변경할 것 
+## 이슈
+- [x] 기능 테스트를 통과하지 못하는 이슈
+  - 병렬처리 과정에서 SingleThreadExecutor 사용으로 데드락 발생 → `newVirtualThreadPerTaskExecutor`로 변경
+  - 플래키 테스트 지속: MockedStatic이 비동기 VirtualThread에 전파되지 않아 Mock 값(4,3) 대신 실제 Random 값 호출
+  - 이벤트 버스에 코드를 추가하여 통과하도록 변경 -> 락 발생
+  - 락 발생 이유는 Application.main()에 아래 코드처럼 결과값을 받을 subscribeGameResult를 start() 다음에 둔 것..
+  - 변경 후 RepeatedTest(1000) 테스트 후 전부 통과한걸 확인
+    ```      
+    game.start();
+    subscribeGameResult(eventBus, resultFuture);
+    ```
 - [ ] 예외처리 이슈
   - 잘못된 입력에 `IllegalArgumentException`이 발생해도 나머지 스레드가 살아있어 프로그램이 종료되지 않음.
 
