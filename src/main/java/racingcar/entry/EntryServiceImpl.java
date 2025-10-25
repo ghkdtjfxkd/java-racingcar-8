@@ -3,13 +3,12 @@ package racingcar.entry;
 import java.util.List;
 import java.util.Map.Entry;
 import racingcar.entry.domain.RacingCars;
-import racingcar.entry.dto.ScoreResponse;
 
 public class EntryServiceImpl implements EntryService {
 
     private final RacingEntryRepository racingEntryRepository;
 
-    private EntryServiceImpl() {
+    public EntryServiceImpl() {
         this.racingEntryRepository = new RacingEntryRepository();
     }
 
@@ -24,14 +23,9 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public List<ScoreResponse> currentScores() {
+    public List<Entry<String, Integer>> currentScores() {
         return carsInRace().status()
-                .map(this::score)
                 .toList();
-    }
-
-    private ScoreResponse score(Entry<String, Integer> lapScore) {
-        return ScoreResponse.of(lapScore.getKey(), lapScore.getValue());
     }
 
     private RacingCars carsInRace() {

@@ -1,4 +1,4 @@
-package racingcar.dto;
+package racingcar.dto.request;
 
 public record LapCountRequest(String lapCount) {
     public static LapCountRequest from(String lapCount) {
