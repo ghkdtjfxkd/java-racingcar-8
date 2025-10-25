@@ -23,7 +23,7 @@ public class EventBus {
 
     private EventBus() {}
 
-    public static synchronized EventBus getInstance() {
+    static synchronized EventBus getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -80,13 +80,6 @@ public class EventBus {
     private void exceptionAccept(Exception e) {
         if(exceptionCallback != null) {
             exceptionCallback.accept(new IllegalArgumentException(e));
-        }
-    }
-
-    public <T> void unsubscribe(Class<T> eventType, EventHandler<T> handler) {
-        List<EventHandler<?>> list = handlers.get(eventType);
-        if (list != null) {
-            list.remove(handler);
         }
     }
 

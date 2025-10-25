@@ -80,23 +80,23 @@ class EventBusTest {
         assertEquals(messageForDelivery, actual);
     }
 
-    @DisplayName("unsubscribe() 호출 시, 이후 발행되는 이벤트는 전달되지 않아야 한다.")
-    @Test
-    void unsubscribeShouldPreventFurtherDelivery() {
-        // given
-        DummyStringEvent dummyEvent = helloDummyStringEvent();
-        CompletableFuture<Object> future = new CompletableFuture<>();
-
-        EventHandler<DummyStringEvent> handler = future::complete;
-        eventBus.subscribe(DummyStringEvent.class, handler);
-        eventBus.unsubscribe(DummyStringEvent.class, handler);
-
-        //when
-        eventBus.publish(dummyEvent);
-
-        //then
-        assertThrows(TimeoutException.class, () -> future.get(1, TimeUnit.SECONDS));
-    }
+//    @DisplayName("unsubscribe() 호출 시, 이후 발행되는 이벤트는 전달되지 않아야 한다.")
+//    @Test
+//    void unsubscribeShouldPreventFurtherDelivery() {
+//        // given
+//        DummyStringEvent dummyEvent = helloDummyStringEvent();
+//        CompletableFuture<Object> future = new CompletableFuture<>();
+//
+//        EventHandler<DummyStringEvent> handler = future::complete;
+//        eventBus.subscribe(DummyStringEvent.class, handler);
+//        eventBus.unsubscribe(DummyStringEvent.class, handler);
+//
+//        //when
+//        eventBus.publish(dummyEvent);
+//
+//        //then
+//        assertThrows(TimeoutException.class, () -> future.get(1, TimeUnit.SECONDS));
+//    }
 
     @DisplayName("이벤트 핸들러는 메인 스레드가 아닌 별도 스레드에서 비동기로 실행되어야 한다")
     @Test
