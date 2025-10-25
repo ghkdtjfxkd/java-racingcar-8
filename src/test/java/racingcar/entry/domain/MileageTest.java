@@ -51,7 +51,7 @@ class MileageTest {
     private static Stream<Arguments> mileages() {
         return TestDataProvider.provideMileages()
                 .flatMap(mileage ->
-                        Stream.of(Arguments.of(mileage, "제공된 이동 거리 : " + mileage.getDistance()))
+                        Stream.of(Arguments.of(mileage, "제공된 이동 거리 : " + mileage))
                 );
     }
 }

@@ -2,6 +2,7 @@ package racingcar.entry.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,35 +13,41 @@ import racingcar.entry.strategy.PedalingStrategy;
 class EngineTest {
 
     private static final int TORQUE = 1;
+    private static final int STOP = 3;
     private static final int REPULSIVE_OF_PEDAL = 4;
 
     @ParameterizedTest(name = "[{index}] {1}")
     @MethodSource("mileages")
     @DisplayName("이동 거리 증가 테스트")
-    void mileage_update_test(Mileage mileage, String description) {
+    void mileage_update_test(int mileage, String description) {
         //given
-        int previousDistance = mileage.getDistance();
+        PedalingStrategy movingForward = () -> REPULSIVE_OF_PEDAL;
+        Engine engine = Engine.setup(movingForward);
 
         //when
-        mileage = mileage.add(TORQUE);
+        for (int i = 0; i < mileage; i++) {
+            engine.movement();
+        }
 
         //then
-        int expected = previousDistance + TORQUE;
-        assertEquals(expected, mileage.getDistance());
+        assertEquals(mileage, engine.mileage());
     }
 
     @ParameterizedTest(name = "[{index}] {1}")
-    @MethodSource("torques")
+    @MethodSource("mileages")
     @DisplayName("출력에 따른 이동 거리 증가 테스트")
-    void mileage_updated_from_torque_test(int torque, String description) {
+    void stop_test(int mileage, String description) {
         //given
-        Mileage mileage = Mileage.setup();
+        PedalingStrategy stop = () -> STOP;
+        Engine engine = Engine.setup(stop);
 
         //when
-        mileage = mileage.add(torque);
+        for (int i = 0; i < mileage; i++) {
+            engine.movement();
+        }
 
         //then
-        assertEquals(torque, mileage.getDistance());
+        assertEquals(0, engine.mileage());
     }
 
     @ParameterizedTest(name = "[{index}] {1}")
@@ -81,9 +88,9 @@ class EngineTest {
     }
 
     private static Stream<Arguments> mileages() {
-        return TestDataProvider.provideMileages()
+        return TestDataProvider.provideMovementCount()
                 .flatMap(mileage ->
-                        Stream.of(Arguments.of(mileage, "제공된 이동 거리 : " + mileage.getDistance()))
+                        Stream.of(Arguments.of(mileage, "제공된 이동 거리 : " + mileage))
                 );
     }
 
