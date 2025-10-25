@@ -31,7 +31,7 @@ class ParticipantNameTest {
     void empty_name_exception_message_test(String carNameToken, String description) {
         assertThatThrownBy(() -> ParticipantName.of(carNameToken))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR]: 빈 입력은 올 수 없습니다.(BLANK)");
+                .hasMessage("[ERROR]: 빈 이름은 올 수 없습니다.(BLANK)");
     }
 
     @ParameterizedTest(name = "[{index}] 자동차 이름 공백 문자 포함 시 예외 메시지 테스트: {1}")

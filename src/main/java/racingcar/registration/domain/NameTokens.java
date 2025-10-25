@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class NameTokens {
+class NameTokens {
 
     private final List<ParticipantName> participantNames;
 

@@ -1,6 +1,6 @@
 package racingcar.registration.domain;
 
-public class ParticipantName {
+class ParticipantName {
 
     private static final short MAX_LENGTH = 5;
 
@@ -19,7 +19,7 @@ public class ParticipantName {
 
     private static void requireNonEmpty(String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException(ErrorMessage.IS_BLANK.getMessage());
+            throw new IllegalArgumentException(ErrorMessage.NAME_IS_BLANK.getMessage());
         }
     }
 

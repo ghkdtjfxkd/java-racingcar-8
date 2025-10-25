@@ -23,4 +23,13 @@ class TestDataProvider {
                 "abcde"
         );
     }
+
+    static Stream<String> provideCorrectNamesInputs() {
+        return Stream.of(
+                "1",
+                "a",
+                "1,a",
+                "1,a,1ab"
+        );
+    }
 }

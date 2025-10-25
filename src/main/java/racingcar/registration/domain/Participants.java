@@ -1,20 +1,20 @@
 package racingcar.registration.domain;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Participants {
 
     private static final String DELIMITER = ",";
     private final NameTokens nameTokens;
 
-    private Participants(NameTokens nameTokens) {
-        this.nameTokens = nameTokens;
+    private Participants(String carNamesInput) {
+        requireDelimiterIsNotTerminator(carNamesInput);
+        this.nameTokens = NameTokens.of(extract(carNamesInput));
     }
 
     public static Participants from(String carNamesInput) {
         requireNonBlank(carNamesInput);
-        return new Participants(NameTokens.of(extract(carNamesInput)));
+        return new Participants(carNamesInput);
     }
 
     private static void requireNonBlank(String carNamesInput) {
@@ -23,7 +23,13 @@ public class Participants {
         }
     }
 
-    private static List<String> extract(String carNamesInput) {
+    private void requireDelimiterIsNotTerminator(String carNamesInput) {
+        if(carNamesInput.endsWith(DELIMITER)) {
+            throw new IllegalArgumentException(ErrorMessage.ENDS_WITH_DELIMITER.getMessage());
+        }
+    }
+
+    private List<String> extract(String carNamesInput) {
         return List.of(carNamesInput.split(DELIMITER));
     }
 

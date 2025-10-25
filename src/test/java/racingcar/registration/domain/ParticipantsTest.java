@@ -14,6 +14,8 @@ import racingcar.GlobalTestDataProvider;
 
 class ParticipantsTest {
 
+    private static final String DELIMITER = ",";
+
     @Test
     @DisplayName("입력이 `null`일 때, IllegalArgumentException() 예외 발생 테스트")
     void null_throws_IllegalArgumentException() {
@@ -34,11 +36,20 @@ class ParticipantsTest {
                 .hasMessage("[ERROR]: 빈 입력은 올 수 없습니다.(BLANK)");
     }
 
-    /***
-     * 개발 속도 저하로 RacingCarNamesTest의 추가적인 테스트는 MVP 완성 이후 작성.
-     */
+    @ParameterizedTest(name = "[{index}] 구분자로 끝날 때: {0}")
+    @MethodSource("provideCorrectNamesInputsAddDelimiter")
+    @DisplayName("입력이 구분자로 끝날 때 예외 발생 테스트")
+    void ends_delimiter_input_exception_test(String carNameToken) {
+        AssertionsForClassTypes.assertThatThrownBy(() -> Participants.from(carNameToken))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR]: 구분자로 입력이 종료되고 있습니다.");
+    }
 
     private static Stream<Arguments> provideEmptyCarNameTokens() {
         return GlobalTestDataProvider.provideOnlyBlanksTokens();
+    }
+
+    private static Stream<String> provideCorrectNamesInputsAddDelimiter() {
+        return TestDataProvider.provideCorrectNamesInputs().map(s -> s + DELIMITER);
     }
 }
