@@ -43,15 +43,13 @@ class MileageTest {
 
     private static Stream<Arguments> torques() {
         return TestDataProvider.provideTorques()
-                .flatMap(torque ->
-                        Stream.of(Arguments.of(torque, "제공된 출력 : " + torque))
-                );
+                .map(torque ->
+                        Arguments.of(torque, "제공된 출력 : " + torque));
     }
 
     private static Stream<Arguments> mileages() {
         return TestDataProvider.provideMileages()
-                .flatMap(mileage ->
-                        Stream.of(Arguments.of(mileage, "제공된 이동 거리 : " + mileage))
-                );
+                .map(mileage ->
+                        Arguments.of(mileage, "제공된 이동 거리 : " + mileage));
     }
 }

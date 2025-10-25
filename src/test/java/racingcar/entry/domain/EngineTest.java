@@ -2,7 +2,6 @@ package racingcar.entry.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,6 +12,7 @@ import racingcar.entry.strategy.PedalingStrategy;
 class EngineTest {
 
     private static final int TORQUE = 1;
+
     private static final int STOP = 3;
     private static final int REPULSIVE_OF_PEDAL = 4;
 
@@ -35,7 +35,7 @@ class EngineTest {
 
     @ParameterizedTest(name = "[{index}] {1}")
     @MethodSource("mileages")
-    @DisplayName("출력에 따른 이동 거리 증가 테스트")
+    @DisplayName("정지 테스트")
     void stop_test(int mileage, String description) {
         //given
         PedalingStrategy stop = () -> STOP;
@@ -82,25 +82,23 @@ class EngineTest {
 
     private static Stream<Arguments> torques() {
         return TestDataProvider.provideTorques()
-                .flatMap(torque ->
-                        Stream.of(Arguments.of(torque, "제공된 출력 : " + torque))
-                );
+                .map(torque ->
+                        Arguments.of(torque, "제공된 출력 : " + torque));
     }
 
     private static Stream<Arguments> mileages() {
         return TestDataProvider.provideMovementCount()
-                .flatMap(mileage ->
-                        Stream.of(Arguments.of(mileage, "제공된 이동 거리 : " + mileage))
-                );
+                .map(mileage ->
+                        Arguments.of(mileage, "제공된 이동 거리 : " + mileage));
     }
 
     private static Stream<Arguments> weakPressingForces() {
         return TestDataProvider.providePressingForces()
-                .limit(REPULSIVE_OF_PEDAL).map( force -> Arguments.of(force, "제공된 힘 : " + force));
+                .limit(REPULSIVE_OF_PEDAL).map(force -> Arguments.of(force, "제공된 힘 : " + force));
     }
 
     private static Stream<Arguments> enoughPressingForces() {
         return TestDataProvider.providePressingForces()
-                .skip(REPULSIVE_OF_PEDAL).map( force -> Arguments.of(force, "제공된 힘 : " + force));
+                .skip(REPULSIVE_OF_PEDAL).map(force -> Arguments.of(force, "제공된 힘 : " + force));
     }
 }
