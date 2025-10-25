@@ -7,6 +7,8 @@ import racingcar.common.RacingCarGames;
 import racingcar.common.schema.ResultEvents.WinnersDetermined;
 import racingcar.config.GameConfiguration;
 import racingcar.dto.RacingResultResponse;
+import racingcar.io.output.OutputAdapter;
+import racingcar.io.output.OutputEventAdapter;
 import racingcar.io.output.OutputView;
 
 public class Application {
@@ -26,7 +28,7 @@ public class Application {
         game.start();
 
         subscribeGameResult(eventBus, resultFuture);
-        OutputView.announce(RacingResultResponse.of(resultFuture.join()));
+        OutputAdapter.announceWinners(resultFuture.join());
     }
 
     private static void subscribeGameResult(EventBus eventBus, CompletableFuture<List<String>> resultFuture) {
