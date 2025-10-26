@@ -24,10 +24,14 @@ class LapCount {
     }
 
     private static void requireNumeric(String lapCountInput) {
-        for (char c : lapCountInput.toCharArray()) {
-            if (!Character.isDigit(c)) {
-                throw new IllegalArgumentException(ErrorMessage.IS_NOT_DIGIT.getMessage());
-            }
+        for (char token : lapCountInput.toCharArray()) {
+            requireDigit(token);
+        }
+    }
+
+    private static void requireDigit(char token) {
+        if (!Character.isDigit(token)) {
+            throw new IllegalArgumentException(ErrorMessage.IS_NOT_DIGIT.getMessage());
         }
     }
 
