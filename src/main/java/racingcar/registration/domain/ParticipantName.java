@@ -7,29 +7,33 @@ class ParticipantName {
     private final String name;
 
     private ParticipantName(String nameToken) {
+        requireValid(nameToken);
         this.name = nameToken;
     }
 
     static ParticipantName of(String nameToken) {
-        requireNonEmpty(nameToken);
-        requireNoWhitespace(nameToken);
-        requireAcceptableMaxLength(nameToken);
         return new ParticipantName(nameToken);
     }
 
-    private static void requireNonEmpty(String name) {
-        if (name == null || name.isBlank()) {
+    private void requireValid(String nameToken) {
+        requireNonEmpty(nameToken);
+        requireNoWhitespace(nameToken);
+        requireAcceptableMaxLength(nameToken);
+    }
+
+    private void requireNonEmpty(String nameToken) {
+        if (nameToken == null || nameToken.isBlank()) {
             throw new IllegalArgumentException(ErrorMessage.NAME_IS_BLANK.getMessage());
         }
     }
 
-    private static void requireNoWhitespace(String nameToken) {
+    private void requireNoWhitespace(String nameToken) {
         if (nameToken.contains(" ")) {
             throw new IllegalArgumentException(ErrorMessage.WHITE_SPACES_EXIST.getMessage());
         }
     }
 
-    private static void requireAcceptableMaxLength(String nameToken) {
+    private void requireAcceptableMaxLength(String nameToken) {
         if (nameToken.length() > MAX_LENGTH) {
             throw new IllegalArgumentException(ErrorMessage.EXCEEDS_MAX_LENGTH.getMessageWith(MAX_LENGTH));
         }
