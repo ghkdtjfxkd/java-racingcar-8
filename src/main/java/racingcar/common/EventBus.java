@@ -27,10 +27,6 @@ public class EventBus {
         return SingletonHolder.INSTANCE;
     }
 
-    public void setExceptionCallback(Consumer<Exception> callback) {
-        this.exceptionCallback = callback;
-    }
-
     public <T> void subscribe(Class<T> eventType, EventHandler<T> handler) {
         handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
                 .add(handler);
@@ -79,16 +75,20 @@ public class EventBus {
 
     private void exceptionAccept(Exception e) {
         if(exceptionCallback != null) {
-            exceptionCallback.accept(new IllegalArgumentException(e));
+            exceptionCallback.accept(e);
         }
     }
 
-    public void shutdown() {
-        executor.shutdown();
+    public void setExceptionCallback(Consumer<Exception> callback) {
+        this.exceptionCallback = callback;
     }
 
     public void handleException(Exception e) {
         exceptionCallback.accept(e);
+        shutdown();
+    }
+
+    public void shutdown() {
         executor.shutdown();
     }
 }

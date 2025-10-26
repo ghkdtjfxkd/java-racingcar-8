@@ -2,131 +2,201 @@
 
 > Event-Driven-Architecture로 구현하는 자동차 경주
 
+## 기능 목록
+
+### 🧩EventBus
+
+- [x] Event Bus
+- [x] Event Bus 에서 사용될 이벤트 스키마 정의
+
+---
+
+### 📝 Registration
+
+- [x] 입력 받은 자동차 이름 목록을 파싱한다.
+    - [x] 입력 받은 자동차 이름 목록을 검증한다.
+    - [x] 입력 받은 자동차 이름을 검증한다.
+- [x] 경기에 참여할 자동차 이름 목록을 반환한다.
+
+---
+
+### 🏎️ Entry
+
+- [x] 자동차를 움직인다.
+- [x] 자동차의 이름과 움직인 거리를 반환한다.
+
+---
+
+### 💻 I/O
+
+- [x] 사용자로부터 입력을 받는다.
+    - [x] 사용자로부터 참여할 자동차 목록을 입력 받는다.
+    - [x] 사용자로부터 시도할 횟수(Lap Count)를 입력 받는다.
+- [x] 실행 결과를 출력한다.
+    - [x] 경기 현황을 출력한다.
+    - [x] 우승자를 출력한다.
+
+---
+
+### 🏟️ RACE
+
+- [x] 랩 횟수 입력 값을 검증한다.
+- [x] 남은 랩 횟수를 반환한다.
+
+---
+
+### 🏆 Result
+
+- [x] 경주 우승자(들)를 선별한다.
+
+---
+
 ## 왜 EDA를 도입했나요??
+
 ### 배경
+
 저는 최근 시스템 아키텍처와 동시성 프로그래밍에 관심을 가지고 있습니다.
 특히 이벤트 버스를 활용한 비동기 EDA의 유연성과 확장성에 주목했고,
 2주차 자동차 경주 미션에서 이를 적용해볼 기회를 발견했습니다.
 
 이 미션은 두 번의 사용자 입력을 필요로 합니다
+
 ```
 [자동차 이름 입력] → (사용자 생각 시간) → [시도 횟수 입력]
 ```
+
 사용자가 시도 횟수를 생각하고 입력하는 동안,
 이미 받은 자동차 이름들을 검증하고 경주 준비하는 작업을 비동기로 처리한다면
 시도 횟수 입력 즉시 레이스를 시작할 수 있다고 생각했습니다.
 
-<details>
-<summary>그러나..</summary>
-MockedStatic이 비동기 VirtualThread에 전파되지 않아 Mock 값(4,3) 대신 실제 Random 값 호출하는 이슈로
-테스트 환경에서는 어쩔 수 없이 `ApplicationTest.기능_테스트()`의 테스트에 맞게끔 동기적으로 동작하게 만들었습니다.
-
-</details>
-
 또한 EDA를 통해 관심사를 분리하면
+
 - InputAdapter : InputView와의 소통만
 - OutputAdapter : OutputView와의 소통만
-
-- Registration 도메인: 자동차 이름 검증 
+- Registration 도메인: 자동차 이름 파싱
 - Entry 도메인: 자동차 움직임
 - Race 도메인: 경기 진행
 - Result 도메인: 경기 결과
 
 각 도메인이 이벤트로만 통신하므로 응집도 높고 변경에 유연한 구조를 만들 수 있다고 생각했습니다.
 
-### 오버엔지니어링
-CLI 환경의 순수 자바로 진행되는 과제에서 이런 아키텍처는 오버엔지니어링이라고 생각합니다.
-그럼에도, EDA 패턴 학습과 I/O 병목을 동시성으로 해결하려는
-아키텍처 사고를 개념적으로 표현하는 것에 초점을 맞춰 진행해봤습니다.
+<details>
+<summary>그러나..</summary>
+
+실행했을 때는 정상적으로 동작했지만,
+`Application.기능_테스트()` 를 실행 시에는 제 코드에는 플래키 테스트로 적용됨을 식별했습니다.
+(@RepeatedTest(1000)으로 식별 결과 1/3가량은 실패)
+이 경우에 어떤식으로 처리되는지, 이대로 제출해도 될지 궁금해서 문의를 했지만
+
+기재되지 않은 부분은 스스로 판단해서 구현해야 한다는 답을 받았고
+다시 생각해보니, 제가 생각해도 정해진 조건에 맞춰서 구현해내는게 맞겠다고 판단했습니다.
+그에 따라, 테스트 환경을 식별할 경우 `ApplicationTest.기능_테스트()`의 테스트에 맞게 동기적으로 동작하게 만들었습니다.
+이 경우에는 비동기 처리의 장점을 살리지 못하고, 테스트를 위한 코드를 추가했다는 점에서 아쉬운 점이 있습니다.😥
+
+</details>
+
+CLI 환경의 순수 자바로 진행되는 과제에서 이런 아키텍처는 과할 수 있다고 생각합니다.
+그럼에도, 관심사의 분리, 모듈간 캡슐화, 비동기 EDA 패턴 및 I/O 병목을 동시성으로 해결하려는
+아키텍처 사고를 개념적으로 표현하는 것에 초점을 맞춰서 진행해봤습니다.🙂
 ---
 
-### 🧩EventBus
-- [x] Event Bus
-- [x] Event Bus 에서 사용될 이벤트 스키마 정의
+## 🔥이슈
 
----
-### 📝 Registration
-- [x] 입력 받은 자동차 이름 목록을 파싱한다.
-  - [x] 입력 받은 자동차 이름 목록을 검증한다.
-  - [x] 입력 받은 자동차 이름을 검증한다.
-- [x] 경기에 참여할 자동차 이름 목록을 반환한다.
+### 😵‍💫 ApplicationTest.기능_테스트() 이슈
 
----
-### 🏎️ Entry
-- [x] 자동차를 움직인다.
-- [x] 자동차의 이름과 움직인 거리를 반환한다.
+> 2주차에서 가장 고생했고, 가장 많이 배운 부분입니다.
 
----
-###  💻 I/O 
-- [x] 사용자로부터 입력을 받는다.
-  - [x] 사용자로부터 참여할 자동차 목록을 입력 받는다.
-  - [x] 사용자로부터 시도할 횟수(Lap Count)를 입력 받는다.
-- [x] 실행 결과를 출력한다.
-  - [x] 경기 현황을 출력한다.
-  - [x] 우승자를 출력한다.
+Mokito, JUnit, 비동기, 멀티쓰레드에 대한 깊은 지식이 없었고,
+복잡한 아키텍처로 이슈를 정확하게 파악하지 못했었습니다.
 
----
-### 🏟️ RACE
-- [x] 랩 횟수 입력 값을 검증한다.
-- [x] 남은 랩 횟수를 반환한다.
+이 방법 저 방법 시도해보다 `ApplicationTest.기능_테스트()`는 `MockedStatic`을 사용하고 있음을 알게되었습니다.
 
----
-### 🏆 Result
-- [x] 경주 우승자(들)를 선별한다.
+포커스를 맞춰 `Mokito` 공식 문서를 뒤져보니`MockedStatic`은 현재 정적 목이 생성된 쓰레드에만 영향을 미친다 사실을 알게 되었습니다.
 
+->
+`The mocking only affects the thread on which this static mock was created and it is not safe to use this object from another thread`
+
+`run("pobi,woni", "1");`에 명시적인 데이터로 넣어준 값들은 제대로 들어갔지만,
+`MockedStatic` 이 현재 쓰레드에 제공하는 값(`MOVING_FORWARD`, `STOP`)은
+이벤트 버스에서 새로 생성된 쓰레드 내부로는 전파되지 않았습니다.
+
+즉, 제공될거라 기대하던 Mock 값은 쓰레드 내부로 전달되지 않았고,
+움직임을 담당하는 쓰레드에서는 실제 Random 값을 호출하는 이슈가 있었습니다.
 ---
 
-## 이슈
 - [x] 기능 테스트를 통과하지 못하는 이슈
-  - 병렬처리 과정에서 SingleThreadExecutor 사용으로 데드락 발생 → `newVirtualThreadPerTaskExecutor`로 변경
-  - 플래키 테스트 지속: MockedStatic이 비동기 VirtualThread에 전파되지 않아 Mock 값(4,3) 대신 실제 Random 값 호출
-  - 이벤트 버스에 코드를 추가하여 통과하도록 변경 -> 락 발생
-  - 락 발생 이유는 Application.main()에 아래 코드처럼 결과값을 받을 subscribeGameResult를 start() 다음에 둔 것..
-  - 변경 후 RepeatedTest(1000) 테스트 후 전부 통과한걸 확인
-    ```      
-    game.start();
-    subscribeGameResult(eventBus, resultFuture);
-    ```
-- [x] 예외처리 이슈
-  - 잘못된 입력에 `IllegalArgumentException`이 발생해도 나머지 스레드가 살아있어 프로그램이 종료되지 않음.
-  - 자동차 이름 입력 시 잘못된 입력을 했을 경우는 정상적으로 예외 발생 및 종료되는데, 실행 횟수 입력 시에는 종료되지 않음.
-  - RaceEventHandler에서 startRace() 는 이벤트 버스를 통해 실행되지 않음.
-  - CompletableFuture로 값을 받아서 동작하기 때문에 event bus의 예외처리 로직을 거치지 않음
-  - 이벤트 버스가 이벤트 버스 내에서 발생한 예외를 처리할 수 있도록 직접 요청하는 매서드 추가로 해결
+    - 병렬처리 과정에서 `SingleThreadExecutor`사용으로 비동기 처리 시에 어느 부분에서 데드락이 발생하나?
+        - → `newVirtualThreadPerTaskExecutor`로 변경 하지만 실패. 관련이 없는듯 싶다.
+    - 플래키 테스트 지속
+        - `RaceEventHandler`에서 `CompletableFuture` 2개를 받는 비동기 처리를 해서 그런가?
+            - 이벤트 체인을 변경해 CompletableFuture를 사용하지 않게끔 바꿔도 지속
+        - Random 값이 발생하는 부분의 로그를 보자.
+            - 예상하는 값인 4,3이 아니라 실제로 랜덤값이 발생하는데 왜 그런거지?
+            - `ExecutorService`가 문제인가? `newCachedThreadPool`, `newVirtualThreadPerTaskExecutor` 변경해도 그대로.
+    - `ApplicationTest.기능_테스트()` 는 `MockedStatic`을 사용한다.
+        - `Mokito` 공식 문서를 살펴보자.
+        - 현재 쓰레드에만 제공되어서 그렇구나. 하지만 시간 상 코드를 뜯어 고칠수는 없다.
+        - 이벤트 버스에 테스트 코드 동작 시에만 동기적으로 하나의 쓰레드에서 동작하게 하자.
+
+-[x] 데드 락 이슈
+    - 이제는 예상하는 값인 4,3이 로그로 나온다. 그런데 갑자기 락이 생겼다.
+      - 데드 락 발생 이유는 Application.main()에 결과값을 받을 `subscribeGameResult`를 `start()` 다음에 둔 것..
+        ```      
+        game.start();
+        subscribeGameResult(eventBus, resultFuture);
+        ```
+      - 변경 후, RepeatedTest(1000) 테스트 전부 통과를 다시 한 번 확인
+      - 현재 코드 구조 수정으로 예시 코드랑은 다른 구조를 가짐
+---
+### 예외처리 이슈
+- [x] `java.util.concurrent.CompletionException` 발생 이슈
+  - 잘못된 자동차 이름에 `IllegalArgumentException`이 아닌 `concurrent.CompletionException`이 발생함.
+  - 아무래도 ConcurrentHashMap()에서 발생하는 예외는 CompletionExcption이 발생하는 것 같다.
+  - 검색 결과 비동기적으로 처리한 결과는 CompletionException으로 감싸서 예외를 발생시키는 것 같다.
+  - application.main()에서 예외 변환을 해주자.
+- [x] 잘못된 실행 횟수 입력 시 데드 락 발생
+    - 자동차 이름 입력 시와 다르게 실행 횟수 입력 시에는 예외 발생도 종료도 되지 않는다.
+    - RaceEventHandler에서 startRace() 는 이벤트 버스를 통해 실행되지 않음.
+    - CompletableFuture로 값을 받아서 동작하기 때문에 event bus의 예외처리 로직을 거치지 않음
+    - 이벤트 버스가 이벤트 버스 내에서 발생한 예외를 처리할 수 있도록 직접 요청하는 매서드 추가로 해결
 ---
 
 #### 1. 병렬 처리
-`ParticipantsValidated` 이벤트 발행 시, 두 핸들러가 **병렬로 실행**됩니다:
+
+`ParticipantsValidated` 이벤트 발행 시, 두 핸들러가 병렬로 실행됩니다:
+
 - `EntryEventHandler`: 자동차 등록
 - `InputEventAdapter`: 랩 카운트 입력
 
 두 작업은 독립적이며, `CompletableFuture.allOf()`로 동기화됩니다.
 
 #### 2. 순서 보장
+
 - **이벤트 체인**: 각 이벤트는 이전 이벤트 처리 완료 후 발행
 - **Lap 순서**: 각 Lap은 이전 Lap의 출력 완료 후 실행
 
 #### 3. 동시성 제어
+
 ```java
 private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 ```
-- **VirtualThread**: 경량 스레드로 블로킹 I/O 처리
-- **ConcurrentHashMap**: 멀티스레드 환경에서 안전한 핸들러 관리
-- **이벤트 체인**: 순서가 필요한 작업은 체인으로 연결
+
+- ConcurrentHashMap: 멀티스레드 환경에서 안전한 핸들러 관리
+- 이벤트 체인: 애플리케이션 동작은 이벤 체인으로 연결
 
 ### 이벤트별 책임
 
-| 이벤트 | 발행자 | 구독자 | 역할 |
-|--------|--------|--------|------|
-| `StartEvent` | Application | InputEventAdapter | 게임 시작 신호 |
-| `UserEnteredParticipants` | InputEventAdapter | RegistrationEventHandler | 참가자 이름 전달 |
-| `ParticipantsValidated` | RegistrationEventHandler | EntryEventHandler, InputEventAdapter | 검증 완료 신호 |
-| `CarsPrepared` | EntryEventHandler | RaceEventHandler | 자동차 준비 완료 |
-| `UserEnteredLapCount` | InputEventAdapter | RaceEventHandler | 랩 카운트 전달 |
-| `RaceStarted` | RaceEventHandler | EntryEventHandler | 레이스 시작 |
-| `FirstLapRacingCarsMoved` | EntryEventHandler | OutputEventAdapter | 첫 랩 결과 |
-| `RacingCarsMoved` | EntryEventHandler | OutputEventAdapter | 각 랩 결과 |
-| `LapResultAnnounced` | OutputEventAdapter | RaceEventHandler | 출력 완료 신호 |
-| `RaceCompleted` | RaceEventHandler | EntryEventHandler | 레이스 종료 |
-| `FinalCarPositionsRecorded` | EntryEventHandler | ResultEventHandler | 최종 위치 전달 |
-| `WinnersDetermined` | ResultEventHandler | Application | 우승자 결정 |
+| 이벤트                         | 발행자                     | 구독자                                 | 역할        |
+|-----------------------------|-------------------------|-------------------------------------|-----------|
+| `StartEvent`                | RacingCarGames          | InputEventAdapter                   | 게임 시작 신호  |
+| `UserEnteredParticipants`   | InputEventAdapter       | RegistrationEventHandler            | 참가자 이름 전달 |
+| `ParticipantsValidated`     | RegistrationEventHandler | EntryEventHandler, InputEventAdapter | 검증 완료 신호  |
+| `CarsPrepared`              | EntryEventHandler       | RaceEventHandler                    | 자동차 준비 완료 |
+| `UserEnteredLapCount`       | InputEventAdapter       | RaceEventHandler                    | 랩 카운트 전달  |
+| `RaceStarted`               | RaceEventHandler        | EntryEventHandler                   | 레이스 시작    |
+| `FirstLapRacingCarsMoved`   | EntryEventHandler       | OutputEventAdapter                  | 첫 랩 결과    |
+| `RacingCarsMoved`           | EntryEventHandler       | OutputEventAdapter                  | 각 랩 결과    |
+| `LapResultAnnounced`        | OutputEventAdapter      | RaceEventHandler                    | 출력 완료 신호  |
+| `RaceCompleted`             | RaceEventHandler        | EntryEventHandler                   | 레이스 종료    |
+| `FinalCarPositionsRecorded` | EntryEventHandler       | ResultEventHandler                  | 최종 위치 전달  |
+| `WinnersDetermined`         | ResultEventHandler      | RacingCarGames                      | 우승자 결정    |
