@@ -11,13 +11,14 @@
 ```
 
 ## 구현
+
 ---
-- [x]2025-10-23: 팩토리 매서드에서 검증 vs 생성자 검증
+- [x] 2025-10-23: 팩토리 매서드에서 검증 vs 생성자 검증
   - 결정: 생성자에서 검증
   - 이유: 팩토리 매서드 추가에도 불변식 보장, 캡슐화
   - Etc: 개발 속도가 늦어져, 이미 만든 클래스는 MVP 구현 완료 리팩토링
 ---
-- [x]2025-10-23: 도메인 내 애그리게이트 루트가 의존하는 도메인 클래스에서도 방어적 복사가 필요할까?
+- [x] 2025-10-23: 도메인 내 애그리게이트 루트가 의존하는 도메인 클래스에서도 방어적 복사가 필요할까?
   - 결정: 같은 애그리게이트 내부는 하지 않음
   - 이유: 불변 값을 기본으로 하고 있음, 같은 애그리게이트 내부라 신뢰가 충분하다고 판단
 ---
@@ -51,7 +52,7 @@
   - 이유: 문의에 대한 답이 오지는 않았지만 졸업작품과 미션 데드라인이 얼마 남지 않아서 많은 시간을 투자하긴 힘들다, 우선 통과는 해야할 것 같다.
 ---
 
-## 설계
+## 고민들
 <details>
 <summary>입/출력 책임에 대한 고민</summary>
 
@@ -68,28 +69,25 @@
 <details>
 <summary>DTO로의 전환의 책임은 어느 계층이 맡아야 할까</summary>
 
-RacingCars 는 일급컬렉션이자, 애그리게이션 car 의 루트다. 
-기존에 API 중 lapScore는 LinkedHashMap을 반환했었다.
-하지만 호출마다 굳이 매번 LinkedHashMap 객체를 만들어야만 할까?? 
-Stream으로 넘기고자 했을 때, 파라미터가 2개라서 넘길 수가 없었다.
-Stream<Entry<String, Integer>>로 넘기자니 깔끔하지 않다고 느꼈다. 
-그렇다고, DTO를 도메인 계층에서 DTO로 래핑하는게 맞을까? 메모리 이점을 위해 Stream을 하려고 했는데
-굳이 ??
+- RacingCars 는 일급컬렉션이자, 애그리게이션 car 의 루트다. 
+- 기존에 API 중 lapScore는 LinkedHashMap을 반환했었다.
+- 하지만 호출마다 굳이 매번 LinkedHashMap 객체를 만들어야만 할까?? 
+- Stream으로 넘기고자 했을 때, 파라미터가 2개라서 넘길 수가 없었다.
+- Stream<Entry<String, Integer>>로 넘기자니 깔끔하지 않다고 느꼈다. 
+- 그렇다고, DTO를 도메인 계층에서 DTO로 래핑하는게 맞을까? 메모리 이점을 위해 Stream을 하려고 했는데 굳이 ??
 </details>
 
 <details> <summary>컴포넌트 조립(Wiring) 책임과 main의 역할</summary>
-순수자바 CLI 환경이므로 InputView와 OutputView가 Application.main에 존재하는 것은 자연스럽다.
-io에 관련된 EventHandler들이 Adapter 역할을 하는 것으로 이해해도 될까??
-만약 그렇다면, main이 이 Handler들이 Adapter라는 건데 
-Adapter가 EventBus에 발행 (publish) 하거나 구독(subscribe) 시키는 역할도 맡아야 하는가?
 
-예를들어,
-InputView가 EventBus의 존재를 모르게 하려면, main에서 Adapter를 통해 InputView의 입력을 받아 
-이벤트로 변환하여 발행(publish)하는 역할까지 수행해야 하는지 그 범위가 헷갈린다.
+- 순수자바 CLI 환경이므로 InputView와 OutputView가 Application.main에 존재하는 것은 자연스럽다고 생각했다..
+- io에 관련된 EventHandler들이 Adapter 역할을 하는 것으로 이해해도 될까??
+- 만약 그렇다면, main이 이 Handler들이 Adapter라는 건데 
+- Adapter가 EventBus에 발행 (publish) 하거나 구독(subscribe) 시키는 역할도 맡아야 하는가?
+- 예를들어, InputView가 EventBus의 존재를 모르게 하려면, main에서 Adapter를 통해 InputView의 입력을 받아 이벤트로 변환하여 발행(publish)하는 역할까지 수행해야 하는지 그 범위가 헷갈린다.
 </details>
 
 <details> <summary>Application과 Adapter와 DTO</summary>
-현재 RacingCarGames는 이벤트 버스를 내부적으로 가지고 있다.
+-현재 RacingCarGames는 이벤트 버스를 내부적으로 가지고 있다.
 경주 로직을 시작하고, 결과 로우값(문자열 리스트)을 반환하는 역할을 가지는데
 현재 구조를 보면,
 ```
