@@ -79,32 +79,34 @@
 
 <details> <summary>컴포넌트 조립(Wiring) 책임과 main의 역할</summary>
 
-- 순수자바 CLI 환경이므로 InputView와 OutputView가 Application.main에 존재하는 것은 자연스럽다고 생각했다..
+- 순수자바 CLI 환경이므로 `InputView`와 `OutputView`가 `Application.main`에 존재하는 것은 자연스럽다고 생각했다..
 - io에 관련된 EventHandler들이 Adapter 역할을 하는 것으로 이해해도 될까??
 - 만약 그렇다면, main이 이 Handler들이 Adapter라는 건데 
 - Adapter가 EventBus에 발행 (publish) 하거나 구독(subscribe) 시키는 역할도 맡아야 하는가?
-- 예를들어, InputView가 EventBus의 존재를 모르게 하려면, main에서 Adapter를 통해 InputView의 입력을 받아 이벤트로 변환하여 발행(publish)하는 역할까지 수행해야 하는지 그 범위가 헷갈린다.
+- 예를들어, `InputView`가 `EventBus`의 존재를 모르게 하려면, main에서 Adapter를 통해 `InputView`의 입력을 받아 이벤트로 변환하여 발행(publish)하는 역할까지 수행해야 하는지 그 범위가 헷갈린다.
 </details>
 
 <details> <summary>Application과 Adapter와 DTO</summary>
--현재 RacingCarGames는 이벤트 버스를 내부적으로 가지고 있다.
+
+현재 RacingCarGames는 이벤트 버스를 내부적으로 가지고 있다.
 경주 로직을 시작하고, 결과 로우값(문자열 리스트)을 반환하는 역할을 가지는데
 현재 구조를 보면,
+
 ```
 RacinCarGames -> (결과 값) -> Application -> (결과 값) -> OutputAdapter -> (DTO) -> OutputView 
 ```
 로 가는데 Application에서 결과 로우 값이 노출되어도 될까? 하는 생각에 고민이 된다.
 
-InputEventAdapter와 OutputEventAdapter는 이벤트 버스 내에서 발생하는 이벤트에 따라 
+`InputEventAdapter`와 `OutputEventAdapter`는 이벤트 버스 내에서 발생하는 이벤트에 따라 
 InputView 와 OutputView와 소통하는 역할을 한다. 따라서 DTO로 변환하는 책임을 가지는게 자연스럽다고 생각했다.
 
-하지만 OutputAdapter는? 이벤트 버스 내에 있는게 아니라 Application과 OutputView가 직접적으로 알지 못하게
+하지만 `OutputAdapter`는? 이벤트 버스 내에 있는게 아니라 `Application`과 `OutputView`가 직접적으로 알지 못하게
 두 계층을 연결해주는 통로 역할을 한다. 연결해주는 곳(OutputAdapter)에서 변환하는게 자연스러운것 같기도 하고, 
-Application에서 발생한 값이니 이쪽에서 감싼 다음 넘기는게 자연스러운 것 같기도 하고 애매하다.
+`Application`에서 발생한 값이니 이쪽에서 감싼 다음 넘기는게 자연스러운 것 같기도 하고 애매하다.
 
-1. Application에서 DTO로 감싼다.
-2. OutputAdapter에서 DTO로 감싼다.
-3. RacingCarGames에서 DTO로 감싼다.
-4. RacingCarGames에서 DTO로 감싸서 넘기고, Application에서 OutputAdapter로 전달한 뒤 OutputAdapter에서 다시 변환
+1. `Application`에서 DTO로 감싼다.
+2. `OutputAdapter`에서 DTO로 감싼다.
+3. `RacingCarGames`에서 DTO로 감싼다.
+4. `RacingCarGames`에서 DTO로 감싸서 넘기고, `Application`에서 `OutputAdapter`로 전달한 뒤 `OutputAdapter`에서 다시 변환
 
 </details>
