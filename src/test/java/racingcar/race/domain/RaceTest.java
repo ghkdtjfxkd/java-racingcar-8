@@ -73,5 +73,4 @@ class RaceTest {
                 "11111"
         );
     }
-
 }
