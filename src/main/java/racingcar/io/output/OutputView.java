@@ -3,7 +3,7 @@ package racingcar.io.output;
 import racingcar.dto.response.RaceStateResponse;
 import racingcar.dto.response.RacingResultResponse;
 
-public class OutputView {
+class OutputView {
 
     private static final String EXECUTE_RESULT = "실행 결과";
 
@@ -25,7 +25,7 @@ public class OutputView {
         System.out.println();
     }
 
-    public static void announce(RacingResultResponse racingResult) {
+    static void announce(RacingResultResponse racingResult) {
         System.out.println(OutputFormat.from(racingResult.winners()));
     }
 }
