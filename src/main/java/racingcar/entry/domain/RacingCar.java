@@ -5,13 +5,13 @@ class RacingCar {
     private final String name;
     private final Engine engine;
 
-    private RacingCar(String name) {
+    private RacingCar (String name, Engine engine) {
         this.name = name;
-        this.engine = Engine.setup();
+        this.engine = engine;
     }
 
-    static RacingCar by(String name) {
-        return new RacingCar(name);
+    static RacingCar from(String name, Engine engine) {
+        return new RacingCar(name, engine);
     }
 
     void drive() {

@@ -4,16 +4,41 @@ class LapCount {
 
     private final int remaining;
 
-    private LapCount(int count) {
-        this.remaining = count;
+    private LapCount(int lapCount) {
+        this.remaining = lapCount;
     }
 
     static LapCount from(String input) {
-        return new LapCount(parsePositiveInt(input));
+        return new LapCount(parse(input));
     }
 
-    static LapCount of(int count) {
-        return new LapCount(count);
+    private static int parse(String lapCountInput) {
+        requireNumeric(lapCountInput);
+        try {
+            int value = Integer.parseInt(lapCountInput);
+            requirePositive(value);
+            return value;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ErrorMessage.IS_OUT_OF_INTEGER.getMessage());
+        }
+    }
+
+    private static void requireNumeric(String lapCountInput) {
+        for (char token : lapCountInput.toCharArray()) {
+            requireDigit(token);
+        }
+    }
+
+    private static void requireDigit(char token) {
+        if (!Character.isDigit(token)) {
+            throw new IllegalArgumentException(ErrorMessage.IS_NOT_DIGIT.getMessage());
+        }
+    }
+
+    private static void requirePositive(int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException(ErrorMessage.IS_NOT_POSITIVE.getMessage());
+        }
     }
 
     LapCount decrease() {
@@ -22,21 +47,5 @@ class LapCount {
 
     boolean hasMore() {
         return remaining > 0;
-    }
-
-    private static int parsePositiveInt(String lapCountInput) {
-        try {
-            int value = Integer.parseInt(lapCountInput);
-            requirePositive(value);
-            return value;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("int 범위 넘어가");
-        }
-    }
-
-    private static void requirePositive(int value) {
-        if (value <= 0) {
-            throw new IllegalArgumentException("0보단 커야 돼");
-        }
     }
 }

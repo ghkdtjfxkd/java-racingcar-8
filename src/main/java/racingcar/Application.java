@@ -1,5 +1,6 @@
 package racingcar;
 
+import java.util.concurrent.CompletionException;
 import racingcar.common.RacingCarGames;
 import racingcar.common.GameConfiguration;
 import racingcar.io.output.OutputAdapter;
@@ -10,7 +11,7 @@ public class Application {
         try {
             runWithEventDriven();
         } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+            convertToRequiredTypeException(e);
         }
     }
 
@@ -20,5 +21,12 @@ public class Application {
 
         game.start();
         OutputAdapter.announceWinners(game.result());
+    }
+
+    private static void convertToRequiredTypeException(Exception e) {
+        if(e instanceof CompletionException && e.getCause() != null) {
+            throw new IllegalArgumentException(e.getCause().getMessage());
+        }
+        throw new RuntimeException("[ERROR] : 예상치 못한 에러", e);
     }
 }

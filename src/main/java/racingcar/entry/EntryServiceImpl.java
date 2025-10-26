@@ -2,13 +2,17 @@ package racingcar.entry;
 
 import java.util.List;
 import java.util.Map.Entry;
+import racingcar.entry.strategy.PedalingStrategy;
+import racingcar.entry.domain.RacingCarFactory;
 import racingcar.entry.domain.RacingCars;
 
 public class EntryServiceImpl implements EntryService {
 
+    private final PedalingStrategy pedalingStrategy;
     private final RacingEntryRepository racingEntryRepository;
 
-    public EntryServiceImpl() {
+    public EntryServiceImpl(PedalingStrategy pedalingStrategy) {
+        this.pedalingStrategy = pedalingStrategy;
         this.racingEntryRepository = new RacingEntryRepository();
     }
 
@@ -33,6 +37,7 @@ public class EntryServiceImpl implements EntryService {
     }
 
     private RacingCars carsFrom(List<String> carNames) {
-        return RacingCars.from(carNames);
+        RacingCarFactory factory = RacingCarFactory.of(pedalingStrategy);
+        return factory.createEntryFrom(carNames);
     }
 }

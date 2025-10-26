@@ -10,9 +10,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class LapCountTest {
 
-    @ParameterizedTest(name = "[{index}] 잘못된 랩 횟수 예외 발생 테스트")
+    @ParameterizedTest(name = "[{index}] 잘못된 시도 횟수 입력 : \"{0}\"")
     @MethodSource("provideWrongLapCounts")
-    @DisplayName("잘못된 랩 횟수 예외 발생 테스트")
+    @DisplayName("잘못된 시도 횟수 입력 시 예외 발생 테스트")
     void wrong_lap_count_exception_test(String wrongLapCount) {
         assertThrows(IllegalArgumentException.class, () -> LapCount.from(wrongLapCount));
     }
@@ -20,15 +20,15 @@ class LapCountTest {
     @Test
     @DisplayName("랩 횟수 줄이기 테스트")
     void decrease_lap_count_test() {
-        LapCount OneLapRemaining = LapCount.of(1);
+        LapCount OneLapRemaining = LapCount.from("1");
         assertFalse(OneLapRemaining.decrease().hasMore());
     }
 
-    @ParameterizedTest(name = "[{index}] 0보다 큰 랩 횟수")
+    @ParameterizedTest(name = "[{index}] 0보다 큰 랩 횟수 : {0}")
     @MethodSource("provideCorrectLapCounts")
     @DisplayName("잔여 랩 횟수 존재 시 true 테스트")
-    void has_more_lap_count_test(int lapCount) {
-        assertTrue(LapCount.of(lapCount).hasMore());
+    void has_more_lap_count_test(String lapCount) {
+        assertTrue(LapCount.from(lapCount).hasMore());
     }
 
     private static Stream<String> provideWrongLapCounts() {
@@ -36,16 +36,20 @@ class LapCountTest {
                 "-1",
                 "0",
                 "2147483648",// 2147483647(Integer.MAX) + 1
-                "-2147483649" // -2147483648(Integer.MIN) - 1
+                "-2147483649", // -2147483648(Integer.MIN) - 1
+                "abc",
+                "ab1",
+                "1ab",
+                "1 b"
         );
     }
 
-    private static Stream<Integer> provideCorrectLapCounts() {
+    private static Stream<String> provideCorrectLapCounts() {
         return Stream.of(
-                1,
-                2,
-                10,
-                11111
+                "1",
+                "2",
+                "10",
+                "11111"
         );
     }
 }

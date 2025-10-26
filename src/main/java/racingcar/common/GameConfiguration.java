@@ -2,6 +2,9 @@ package racingcar.common;
 
 import racingcar.entry.EntryEventHandler;
 import racingcar.entry.EntryServiceImpl;
+import racingcar.entry.domain.RacingCarFactory;
+import racingcar.entry.strategy.PedalingStrategy;
+import racingcar.entry.strategy.RandomPedalingStrategy;
 import racingcar.io.input.InputEventAdapter;
 import racingcar.io.output.OutputEventAdapter;
 import racingcar.race.RaceEventHandler;
@@ -33,8 +36,14 @@ public class GameConfiguration {
         new InputEventAdapter(eventBus);
 
         new RegistrationEventHandler(eventBus, new RegistrationServiceImpl());
-        new EntryEventHandler(eventBus,  new EntryServiceImpl());
+
+        new EntryEventHandler(eventBus, new EntryServiceImpl(new RandomPedalingStrategy()));
         new RaceEventHandler(eventBus, new RaceServiceImpl());
         new ResultEventHandler(eventBus);
+    }
+
+    private static EntryServiceImpl entryServiceWithPedalingStrategy() {
+        PedalingStrategy pedalingStrategy = new RandomPedalingStrategy();
+        return new EntryServiceImpl(pedalingStrategy);
     }
 }
