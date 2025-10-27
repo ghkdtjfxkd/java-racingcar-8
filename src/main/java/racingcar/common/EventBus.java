@@ -28,7 +28,7 @@ public class EventBus {
     }
 
     public <T> void subscribe(Class<T> eventType, EventHandler<T> handler) {
-        handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
+        handlers.computeIfAbsent(eventType, unusedKey -> new CopyOnWriteArrayList<>())
                 .add(handler);
     }
 

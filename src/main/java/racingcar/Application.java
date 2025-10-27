@@ -11,7 +11,7 @@ public class Application {
         try {
             runWithEventDriven();
         } catch (Exception e) {
-            convertToRequiredTypeException(e);
+            convertRequiredTypeException(e);
         }
     }
 
@@ -23,7 +23,7 @@ public class Application {
         OutputAdapter.announceWinners(game.result());
     }
 
-    private static void convertToRequiredTypeException(Exception e) {
+    private static void convertRequiredTypeException(Exception e) {
         if(e instanceof CompletionException && e.getCause() != null) {
             throw new IllegalArgumentException(e.getCause().getMessage());
         }
