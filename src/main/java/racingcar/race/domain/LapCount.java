@@ -9,29 +9,17 @@ class LapCount {
     }
 
     static LapCount from(String input) {
-        return new LapCount(parse(input));
+        int count = parseToInt(input);
+
+        requirePositive(count);
+        return new LapCount(count);
     }
 
-    private static int parse(String lapCountInput) {
-        requireNumeric(lapCountInput);
+    private static int parseToInt(String lapCountInput) {
         try {
-            int value = Integer.parseInt(lapCountInput);
-            requirePositive(value);
-            return value;
+            return Integer.parseInt(lapCountInput);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ErrorMessage.IS_OUT_OF_INTEGER.getMessage());
-        }
-    }
-
-    private static void requireNumeric(String lapCountInput) {
-        for (char token : lapCountInput.toCharArray()) {
-            requireDigit(token);
-        }
-    }
-
-    private static void requireDigit(char token) {
-        if (!Character.isDigit(token)) {
-            throw new IllegalArgumentException(ErrorMessage.IS_NOT_DIGIT.getMessage());
         }
     }
 
