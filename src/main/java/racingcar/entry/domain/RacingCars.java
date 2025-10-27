@@ -26,7 +26,6 @@ public class RacingCars {
      */
     public Map<String, Integer> status() {
         LinkedHashMap<String, Integer> status = new LinkedHashMap<>();
-
         for (RacingCar racingCar : entry) {
             status.put(racingCar.name(), racingCar.position());
         }

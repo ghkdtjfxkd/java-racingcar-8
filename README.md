@@ -145,13 +145,13 @@ Mokito, JUnit, 비동기, 멀티스레드에 대한 깊은 지식이 없었고,
       - → `newVirtualThreadPerTaskExecutor`로 변경, 하지만 실패. 관련이 없는듯 싶다.
     - 플래키 테스트가 지속됨(같은 코드로 성공 2 실패 1 정도의 비율)
         - `RaceEventHandler`에서 `CompletableFuture` 2개를 받는 비동기 처리를 해서 그런가?
-            - 이벤트 체인을 변경해 CompletableFuture를 사용하지 않게 모든 로직이 이벤트를 통해 하나씩 순차적으로 실행 되도록 바꿔보자. -> 소용없음.
+            - 이벤트 체인을 변경해 `CompletableFuture`를 사용하지 않게 모든 로직이 이벤트를 통해 하나씩 순차적으로 실행 되도록 바꿔보자. -> 소용없음.
         - Random 값이 발생하는 부분의 로그를 보자.
             - 예상하는 값인 4,3이 아니라 실제로 랜덤값이 발생함. 왜 그런거지?
             - `ExecutorService`가 문제인가? `newCachedThreadPool`, `newVirtualThreadPerTaskExecutor` 변경해도 그대로.
     - `ApplicationTest.기능_테스트()` 는 `MockedStatic`을 사용한다.
         - `Mokito` 공식 문서를 살펴보자.
-        - 현재 쓰레드에만 값이 제공되는 방식이라 그렇구나. 하지만 시간 상 코드를 뜯어 고칠수는 없다.
+        - 현재 스레드에만 값이 제공되는 방식이라 그렇구나. 하지만 시간 상 코드를 뜯어 고칠수는 없다.
         - 이벤트 버스에 테스트 코드 동작 시에만 동기적으로 하나의 스레드에서 동작하게 이벤트 훅을 추가하자.
 
 -[x] 데드 락 이슈
@@ -168,8 +168,8 @@ Mokito, JUnit, 비동기, 멀티스레드에 대한 깊은 지식이 없었고,
 ### 예외처리 이슈
 - [x] `java.util.concurrent.CompletionException` 발생 이슈
   - 잘못된 자동차 이름 입력에 `IllegalArgumentException`이 아닌 `concurrent.CompletionException`이 발생함.
-  - 아무래도 ConcurrentHashMap 에서 발생하는 예외는 CompletionExcption이 발생하는 것 같다.
-  - 검색 결과 비동기적으로 처리한 결과는 CompletionException으로 감싸서 예외를 발생시키는 것 같다.
+  - 아무래도 `ConcurrentHashMap` 에서 발생하는 예외는 `CompletionExcption`이 발생하는 것 같다.
+  - 검색 결과 비동기적으로 처리한 결과는 `CompletionException`으로 감싸서 예외를 발생시키는 것 같다.
   - `Application.main()`에서 예외 변환을 해주자.
 - [x] 잘못된 실행 횟수 입력 시 데드 락 발생
     - 자동차 이름 입력 시와 다르게 실행 횟수 입력 시에는 예외 발생도 종료도 되지 않는다.
@@ -177,7 +177,7 @@ Mokito, JUnit, 비동기, 멀티스레드에 대한 깊은 지식이 없었고,
     - 이벤트 버스에서 예외가 발생하면 잡도록 해놨는데 왜 안될까?
     - `RaceEventHandler`에서 `startRace()` 는 이벤트 버스를 통해 실행되지 않음.
     - 입력과 관련된 이벤트가 들어오면 CompletableFuture 값을 complete 만 시킨다.
-    - CompletableFuture 이 전부 complete 하면 `RaceEventHandler`에서 동작하기 때문에 이벤트 버스의 예외 처리 로직을 거치지 않았다.
+    - `CompletableFuture` 이 전부 complete() 하면 `RaceEventHandler`에서 동작하기 때문에 이벤트 버스의 예외 처리 로직을 거치지 않았다.
     - 이벤트 버스가 이벤트 버스 내에서 발생한 예외를 처리할 수 있도록 직접 요청하는 매서드 추가로 해결
 ---
 
