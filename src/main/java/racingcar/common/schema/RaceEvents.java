@@ -12,7 +12,8 @@ public class RaceEvents {
      * <br>
      * <b>구독:</b> {@link EntryEventHandler}
      */
-    public record RaceStarted () {}
+    public record RaceStarted() {
+    }
 
     /**
      * 랩 실행됨 이벤트
@@ -21,7 +22,8 @@ public class RaceEvents {
      * <br>
      * <b>구독:</b> {@link EntryEventHandler}
      */
-    public record LapExecuted () {}
+    public record LapExecuted() {
+    }
 
     /**
      * 랩 종료됨 이벤트
@@ -30,5 +32,6 @@ public class RaceEvents {
      * <br>
      * <b>구독:</b> {@link EntryEventHandler}
      */
-    public record RaceCompleted() {}
+    public record RaceCompleted() {
+    }
 }

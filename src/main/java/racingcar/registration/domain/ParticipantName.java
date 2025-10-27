@@ -40,7 +40,7 @@ class ParticipantName {
         }
     }
 
-    String get(){
+    String get() {
         return name;
     }
 }

@@ -15,7 +15,7 @@ public class RacingCarFactory {
         return new RacingCarFactory(pedalingStrategy);
     }
 
-    public RacingCars createEntryFrom(List<String> carNames) {
+    public RacingCars createLineupFrom(List<String> carNames) {
         return new RacingCars(createCarsFrom(carNames));
     }
 
@@ -26,10 +26,10 @@ public class RacingCarFactory {
     }
 
     private RacingCar create(String name) {
-        return RacingCar.from(name, tuningEngine());
+        return RacingCar.from(name, tunedEngine());
     }
 
-    private Engine tuningEngine() {
+    private Engine tunedEngine() {
         return Engine.setup(pedalingStrategy);
     }
 }

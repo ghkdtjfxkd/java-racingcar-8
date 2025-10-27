@@ -26,6 +26,6 @@ class Engine {
     }
 
     int mileage() {
-        return mileage.getDistance();
+        return mileage.distance();
     }
 }

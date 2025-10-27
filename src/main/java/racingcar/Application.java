@@ -24,7 +24,7 @@ public class Application {
     }
 
     private static void convertRequiredTypeException(Exception e) {
-        if(e instanceof CompletionException && e.getCause() != null) {
+        if (e instanceof CompletionException && e.getCause() != null) {
             throw new IllegalArgumentException(e.getCause().getMessage());
         }
         throw new RuntimeException("[ERROR] : 예상치 못한 에러", e);

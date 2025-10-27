@@ -5,6 +5,7 @@ import java.util.List;
 public class Participants {
 
     private static final String DELIMITER = ",";
+
     private final NameTokens nameTokens;
 
     private Participants(String carNamesInput) {
@@ -18,13 +19,13 @@ public class Participants {
     }
 
     private static void requireNonBlank(String carNamesInput) {
-        if(carNamesInput == null || carNamesInput.isBlank()) {
+        if (carNamesInput == null || carNamesInput.isBlank()) {
             throw new IllegalArgumentException(ErrorMessage.IS_BLANK.getMessage());
         }
     }
 
     private void requireDelimiterIsNotTerminator(String carNamesInput) {
-        if(carNamesInput.endsWith(DELIMITER)) {
+        if (carNamesInput.endsWith(DELIMITER)) {
             throw new IllegalArgumentException(ErrorMessage.ENDS_WITH_DELIMITER.getMessage());
         }
     }

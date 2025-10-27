@@ -16,14 +16,14 @@ class MileageTest {
     void mileage_update_test(Mileage mileage, String description) {
         //given
         int torque = 1;
-        int previousDistance = mileage.getDistance();
+        int previousDistance = mileage.distance();
 
         //when
         mileage = mileage.add(torque);
 
         //then
         int expected = previousDistance + torque;
-        assertEquals(expected, mileage.getDistance());
+        assertEquals(expected, mileage.distance());
     }
 
     @ParameterizedTest(name = "[{index}] {1}")
@@ -37,7 +37,7 @@ class MileageTest {
         mileage = mileage.add(torque);
 
         //then
-        assertEquals(torque, mileage.getDistance());
+        assertEquals(torque, mileage.distance());
     }
 
     private static Stream<Arguments> torques() {

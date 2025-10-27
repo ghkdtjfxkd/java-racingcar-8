@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.StringJoiner;
 
 enum OutputFormat {
+
     RACING_RECORDS("%s : %s"),
     WINNERS("최종 우승자 : %s");
 
     private static final String MILEAGE_SIGN = "-";
     private static final String WINNER_DELIMITER = ", ";
+
     private final String form;
 
     OutputFormat(String form) {

@@ -5,7 +5,7 @@ class RacingCar {
     private final String name;
     private final Engine engine;
 
-    private RacingCar (String name, Engine engine) {
+    private RacingCar(String name, Engine engine) {
         this.name = name;
         this.engine = engine;
     }

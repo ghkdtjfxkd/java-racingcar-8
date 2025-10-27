@@ -10,4 +10,5 @@ import racingcar.io.input.InputEventAdapter;
  * <br>
  * <b>구독:</b> {@link InputEventAdapter}
  */
-public record StartEvent() {}
+public record StartEvent() {
+}
