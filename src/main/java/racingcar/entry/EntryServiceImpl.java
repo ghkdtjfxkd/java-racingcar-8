@@ -1,7 +1,7 @@
 package racingcar.entry;
 
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import racingcar.entry.strategy.PedalingStrategy;
 import racingcar.entry.domain.RacingCarFactory;
 import racingcar.entry.domain.RacingCars;
@@ -22,14 +22,14 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public void executeRound() {
+    public void executeLap() {
         carsInRace().updateCarPositions();
     }
 
     @Override
-    public List<Entry<String, Integer>> currentScores() {
-        return carsInRace().status()
-                .toList();
+    public Map<String, Integer> currentScores() {
+        return carsInRace().status();
+
     }
 
     private RacingCars carsInRace() {

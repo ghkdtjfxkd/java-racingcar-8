@@ -1,7 +1,6 @@
 package racingcar.entry;
 
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import racingcar.common.EventBus;
 import racingcar.common.schema.EntryEvents.CarsPrepared;
 import racingcar.common.schema.EntryEvents.FinalCarPositionsRecorded;
@@ -37,21 +36,20 @@ public class EntryEventHandler {
     }
 
     private void handleRaceStarted(RaceStarted raceStarted) {
-        entryService.executeRound();
-        List<Entry<String, Integer>> currentCarPositions = entryService.currentScores();
-
-        eventBus.publish(new FirstLapRacingCarsMoved(currentCarPositions));
+        eventBus.publish(new FirstLapRacingCarsMoved(executeLapAndGetPositions()));
     }
 
     private void handleLapExecuted(LapExecuted lapExecuted) {
-        entryService.executeRound();
-        List<Entry<String, Integer>> currentCarPositions = entryService.currentScores();
+        eventBus.publish(new RacingCarsMoved(executeLapAndGetPositions()));
+    }
 
-        eventBus.publish(new RacingCarsMoved(currentCarPositions));
+    private Map<String, Integer> executeLapAndGetPositions() {
+        entryService.executeLap();
+        return entryService.currentScores();
     }
 
     private void handleRaceCompleted(RaceCompleted raceCompleted) {
-        List<Entry<String, Integer>> finalPositions = entryService.currentScores();
+        Map<String, Integer> finalPositions = entryService.currentScores();
         eventBus.publish(new FinalCarPositionsRecorded(finalPositions));
     }
 }
