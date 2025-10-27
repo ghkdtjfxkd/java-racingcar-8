@@ -14,7 +14,8 @@ public class RegistrationEvents {
      * <br>
      * <b>구독:</b> {@link EntryEventHandler}, {@link InputEventAdapter}
      *
-     *  @param names 검증 완료된 참가자 이름 목록
+     * @param names 검증 완료된 참가자 이름 목록
      */
-    public record ParticipantsValidated(List<String> names) {}
+    public record ParticipantsValidated(List<String> names) {
+    }
 }

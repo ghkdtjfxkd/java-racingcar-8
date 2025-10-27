@@ -10,12 +10,12 @@ public class FinalStandings {
     private final int winningPosition;
     private final List<String> winners;
 
-    private FinalStandings(Map<String,Integer> currentStandings) {
+    private FinalStandings(Map<String, Integer> currentStandings) {
         this.winningPosition = farthestPositionFrom(currentStandings.values());
         this.winners = identifyWinners(currentStandings);
     }
 
-    public static FinalStandings of(Map<String,Integer> currentStandings) {
+    public static FinalStandings of(Map<String, Integer> currentStandings) {
         return new FinalStandings(currentStandings);
     }
 

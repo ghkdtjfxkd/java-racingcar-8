@@ -31,25 +31,23 @@ public class EntryEventHandler {
 
     private void handleParticipantsValidated(ParticipantsValidated validated) {
         entryService.registerCars(validated.names());
-
         eventBus.publish(new CarsPrepared());
     }
 
     private void handleRaceStarted(RaceStarted raceStarted) {
-        eventBus.publish(new FirstLapRacingCarsMoved(executeLapAndGetPositions()));
+        eventBus.publish(new FirstLapRacingCarsMoved(currentPositions()));
     }
 
     private void handleLapExecuted(LapExecuted lapExecuted) {
-        eventBus.publish(new RacingCarsMoved(executeLapAndGetPositions()));
-    }
-
-    private Map<String, Integer> executeLapAndGetPositions() {
         entryService.executeLap();
-        return entryService.currentScores();
+        eventBus.publish(new RacingCarsMoved(currentPositions()));
     }
 
     private void handleRaceCompleted(RaceCompleted raceCompleted) {
-        Map<String, Integer> finalPositions = entryService.currentScores();
-        eventBus.publish(new FinalCarPositionsRecorded(finalPositions));
+        eventBus.publish(new FinalCarPositionsRecorded(currentPositions()));
+    }
+
+    private Map<String, Integer> currentPositions() {
+        return entryService.currentScores();
     }
 }

@@ -45,7 +45,7 @@ public class RaceEventHandler {
     }
 
     private void handleLapResultAnnounced(LapResultAnnounced lapResultAnnounced) {
-        if(!raceService.isFinished()) {
+        if (!raceService.isFinished()) {
             raceService.executeNextLap();
             eventBus.publish(new LapExecuted());
             return;

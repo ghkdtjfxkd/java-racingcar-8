@@ -5,6 +5,7 @@ import java.util.Map;
 
 public interface EntryService {
     void registerCars(List<String> carNames);
+
     void executeLap();
 
     /**

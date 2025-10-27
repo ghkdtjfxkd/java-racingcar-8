@@ -17,5 +17,6 @@ public class ResultEvents {
      *
      * @param names 승자 이름들
      */
-    public record WinnersDetermined(List<String> names) {}
+    public record WinnersDetermined(List<String> names) {
+    }
 }

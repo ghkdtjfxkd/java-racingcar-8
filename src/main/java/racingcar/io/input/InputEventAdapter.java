@@ -27,7 +27,9 @@ public class InputEventAdapter {
         eventBus.publish(new UserEnteredParticipants(carNames.rawInput()));
     }
 
-    // 마지막 입력 발생 지점. 입력 재시도 로직 없음.
+    /**
+     *마지막 입력 발생 지점. 입력 재시도 로직 없음.
+     */
     private void handleUserEnteredLapCount(ParticipantsValidated event) {
         LapCountRequest request = InputView.requestLapCount();
         InputView.close();

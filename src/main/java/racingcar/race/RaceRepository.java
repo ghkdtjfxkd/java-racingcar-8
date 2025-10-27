@@ -9,6 +9,7 @@ import racingcar.race.domain.Race;
  * Repository를 통해서만 접근하도록 강제합니다.
  */
 class RaceRepository {
+
     private Race race;
 
     void create(Race race) {

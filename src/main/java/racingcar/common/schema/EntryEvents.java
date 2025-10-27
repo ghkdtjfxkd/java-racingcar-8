@@ -29,6 +29,7 @@ public class EntryEvents {
      * <br>
      * <b>(중요) 현재 Map 은 자동차가 입력된 순서를 보장합니다.((Unmodifiable) LinkedHashMap)
      * <p> 참고 : {@link RacingCars}
+     *
      * @param carsPositions 첫 랩에서 움직인 자동차들의 이름과 거리들
      */
     public record FirstLapRacingCarsMoved(Map<String, Integer> carsPositions) {
@@ -44,6 +45,7 @@ public class EntryEvents {
      * <br>
      * <b>(중요) 현재 Map 은 자동차가 입력된 순서를 보장합니다.((Unmodifiable) LinkedHashMap)
      * <p> 참고 : {@link RacingCars}
+     *
      * @param carsPositions 움직인 자동차들의 이름과 거리 목록
      */
     public record RacingCarsMoved(Map<String, Integer> carsPositions) {
@@ -59,6 +61,7 @@ public class EntryEvents {
      * <br>
      * <b>(중요) 현재 Map 은 자동차가 입력된 순서를 보장합니다.((Unmodifiable) LinkedHashMap)
      * <p> 참고 : {@link RacingCars}
+     *
      * @param carsPositions 움직인 자동차들의 이름과 거리 목록
      */
     public record FinalCarPositionsRecorded(Map<String, Integer> carsPositions) {

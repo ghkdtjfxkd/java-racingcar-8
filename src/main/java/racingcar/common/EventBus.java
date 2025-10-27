@@ -21,7 +21,8 @@ public class EventBus {
 
     private Consumer<Exception> exceptionCallback;
 
-    private EventBus() {}
+    private EventBus() {
+    }
 
     static synchronized EventBus getInstance() {
         return SingletonHolder.INSTANCE;
@@ -74,7 +75,7 @@ public class EventBus {
     }
 
     private void exceptionAccept(Exception e) {
-        if(exceptionCallback != null) {
+        if (exceptionCallback != null) {
             exceptionCallback.accept(e);
         }
     }

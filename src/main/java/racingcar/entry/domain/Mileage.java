@@ -17,7 +17,7 @@ class Mileage {
         return new Mileage(this.distance + torque);
     }
 
-    public int getDistance() {
+    public int distance() {
         return distance;
     }
 }

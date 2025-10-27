@@ -38,6 +38,6 @@ public class EntryServiceImpl implements EntryService {
 
     private RacingCars carsFrom(List<String> carNames) {
         RacingCarFactory factory = RacingCarFactory.of(pedalingStrategy);
-        return factory.createEntryFrom(carNames);
+        return factory.createLineupFrom(carNames);
     }
 }

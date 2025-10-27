@@ -2,7 +2,6 @@ package racingcar.common;
 
 import racingcar.entry.EntryEventHandler;
 import racingcar.entry.EntryServiceImpl;
-import racingcar.entry.domain.RacingCarFactory;
 import racingcar.entry.strategy.PedalingStrategy;
 import racingcar.entry.strategy.RandomPedalingStrategy;
 import racingcar.io.input.InputEventAdapter;

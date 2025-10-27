@@ -6,7 +6,8 @@ import racingcar.dto.response.RacingResultResponse;
 // Application 전용
 public class OutputAdapter {
 
-    private OutputAdapter() {}
+    private OutputAdapter() {
+    }
 
     public static void announceWinners(List<String> winners) {
         RacingResultResponse response = RacingResultResponse.of(winners);

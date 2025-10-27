@@ -9,6 +9,7 @@ enum ErrorMessage {
     IS_NOT_DIGIT("숫자만 입력해야 합니다.");
 
     private static final String ERROR_PREFIX = "[ERROR]";
+
     private final String message;
 
     ErrorMessage(String message) {
