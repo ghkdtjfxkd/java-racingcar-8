@@ -3,6 +3,7 @@ package racingcar.registration.domain;
 class ParticipantName {
 
     private static final short MAX_LENGTH = 5;
+    private static final String WHITE_SPACE = " ";
 
     private final String name;
 
@@ -28,7 +29,7 @@ class ParticipantName {
     }
 
     private void requireNoWhitespace(String nameToken) {
-        if (nameToken.contains(" ")) {
+        if (nameToken.contains(WHITE_SPACE)) {
             throw new IllegalArgumentException(ErrorMessage.WHITE_SPACES_EXIST.getMessage());
         }
     }
