@@ -35,6 +35,7 @@ public class EntryEventHandler {
     }
 
     private void handleRaceStarted(RaceStarted raceStarted) {
+        entryService.executeLap();
         eventBus.publish(new FirstLapRacingCarsMoved(currentPositions()));
     }
 
