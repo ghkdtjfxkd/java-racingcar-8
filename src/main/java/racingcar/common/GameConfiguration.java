@@ -35,7 +35,6 @@ public class GameConfiguration {
         new InputEventAdapter(eventBus);
 
         new RegistrationEventHandler(eventBus, new RegistrationServiceImpl());
-
         new EntryEventHandler(eventBus, entryServiceWithPedalingStrategy());
         new RaceEventHandler(eventBus, new RaceServiceImpl());
         new ResultEventHandler(eventBus);

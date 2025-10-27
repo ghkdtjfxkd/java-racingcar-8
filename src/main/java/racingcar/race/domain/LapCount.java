@@ -9,10 +9,10 @@ class LapCount {
     }
 
     static LapCount from(String input) {
-        int count = parseToInt(input);
+        int value = parseToInt(input);
 
-        requirePositive(count);
-        return new LapCount(count);
+        requirePositive(value);
+        return new LapCount(value);
     }
 
     private static int parseToInt(String lapCountInput) {

@@ -36,8 +36,8 @@ public class RaceEventHandler {
 
         try {
             raceService.startRace(userEnteredLapCount.input());
-            raceService.executeNextLap();
 
+            raceService.executeNextLap();
             eventBus.publish(new RaceStarted());
         } catch (IllegalArgumentException e) {
             eventBus.handleException(e);

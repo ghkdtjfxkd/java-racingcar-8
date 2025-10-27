@@ -11,7 +11,7 @@ public class RacingCarFactory {
         this.pedalingStrategy = pedalingStrategy;
     }
 
-    public static RacingCarFactory of(PedalingStrategy pedalingStrategy) {
+    public static RacingCarFactory basedOn(PedalingStrategy pedalingStrategy) {
         return new RacingCarFactory(pedalingStrategy);
     }
 
